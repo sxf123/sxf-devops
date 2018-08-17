@@ -1,0 +1,2 @@
+include:
+  - order-core.install

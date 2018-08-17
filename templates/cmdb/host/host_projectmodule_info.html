@@ -1,0 +1,44 @@
+{% extends "common/base.html" %}
+{% load pagination_tags %}
+{% block content_title %}
+    主机应用列表
+    <small>主机应用列表</small>
+{% endblock %}
+{% block uri %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li class="active"><a href="{% url 'host' %}">主机管理</a></li>
+{% endblock %}
+{% block main_body %}
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-body">
+              <table class="table1 table text-center flat" id="hosttable">
+                <thead>
+                  <tr>
+                        <th>主机名</th>
+                        <th>集群</th>
+                        <th>服务名</th>
+                        <th>ip地址</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% autopaginate host_projectmodule_info 10 %}
+                    {% for h in host_projectmodule_info %}
+                    <tr>
+                        <td>{{ h.hostname }}</td>
+                        <td>{{ h.cluster_name }}</td>
+                        <td>{{ h.module_name }}</td>
+                        <td>{{ h.ip_address }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+                {% paginate %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

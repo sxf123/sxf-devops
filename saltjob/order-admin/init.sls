@@ -1,0 +1,2 @@
+include:
+  - order-admin.install

@@ -1,0 +1,78 @@
+{% extends "common/base.html" %}
+{% load pagination_tags %}
+{% block content_title %}
+    中间件列表
+    <small>中间件列表</small>
+{% endblock %}
+{% block uri %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li class="active"><a href="{% url 'middleware' %}">中间件列表</a></li>
+    <li><a href="#">中间件搜索条目</a></li>
+{% endblock %}
+{% block main_body %}
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+            <form action="" method="post">
+              <div class="col-xs-3 no-padding">
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                  </div>
+                    {{ middleware_search_form.mid_search_name }}
+                </div>
+              </div>
+              <div class="col-xs-2">
+                  {{ middleware_search_form.mid_search_type }}
+              </div>
+              <div class="col-xs-3 no-padding">
+                  <button class="btn btn-info flat" id="search_wf"><i class="fa fa-search"> </i> 搜索</button>
+                  <button class="btn btn-info flat" data-toggle="modal" data-target="#edit_project"><a href="{% url 'middleware_add' %}" style="color: #fff;"><i class="fa fa-plus"> </i>新增主机</a></button>
+              </div>
+            </form>
+            <div class="box-body">
+              <table class="table1 table text-center flat" id="hosttable">
+                <thead>
+                  <tr>
+                        <th>中间件名称</th>
+                        <th>中间件类型</th>
+                        <th>中间件版本</th>
+                    <th>
+                      <div>操作</div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% autopaginate middleware 10 %}
+                    {% for m in middleware %}
+                    <tr>
+                        <td>{{ m.mid_name }}</td>
+                        <td>{{ m.mid_type }}</td>
+                        <td>{{ m.mid_description }}</td>
+                        <td>{{ m.mid_version }}</td>
+                        <td>
+                            <a href="/cmdb/middleware/install/{{ m.mid_name }}/">
+                                <button class="btn btn-success btn-sm">单点安装</button>
+                            </a>
+                            <a href="/cmdb/middleware/update/{{ m.id }}/">
+                                <button class="btn btn-warning btn-sm edit_btn" data-toggle="modal" data-target="#edit_project">修 改</button>
+                            </a>
+                            {% if request.user.is_superuser %}
+                            <a href="/cmdb/middleware/delete/{{ m.id }}/">
+                                <button class="btn btn-danger btn-sm del_btn" data-toggle="modal" data-target="#del_project">删 除</button>
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+                {% paginate %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

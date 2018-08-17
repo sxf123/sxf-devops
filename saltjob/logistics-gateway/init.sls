@@ -1,0 +1,2 @@
+include:
+  - logistics-gateway.install

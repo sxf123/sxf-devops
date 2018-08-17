@@ -1,0 +1,2 @@
+include:
+  - logistics-admin.install

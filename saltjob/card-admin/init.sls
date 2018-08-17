@@ -1,0 +1,2 @@
+include:
+  - card-admin.install

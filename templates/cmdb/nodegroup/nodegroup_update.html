@@ -1,0 +1,40 @@
+{% extends "common/form_base.html" %}
+{% block content_title %}
+    编辑主机组
+    <small>修改主机组</small>
+{% endblock %}
+{% block child_uri %}
+    <li><a href="{% url 'nodegroup' %}">主机组管理</a></li>
+    <li><a href="" class="active">修改主机组</a></li>
+{% endblock %}
+{% block add_form %}
+{#    <style>#}
+{#        .select2-container--default .select2-selection--single {#}
+{#            height: 34px;#}
+{#            background-color: #fff;#}
+{#            border: 1px solid #aaa;#}
+{#            border-radius: 0px;#}
+{#        }#}
+{#    </style>#}
+    <form action="" method="post" class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name">主机组名称</label>
+                    {{ nodegroup_update_form.nodegroup }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="department_name">主机组描述</label>
+                    {{ nodegroup_update_form.nodegroup_desc }}
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button class="btn btn-default"><a href="{% url 'nodegroup' %}">取消</a></button>
+            <button class="btn btn-info" id="add" type="submit">确定</button>
+        </div>
+    </form>
+{% endblock %}

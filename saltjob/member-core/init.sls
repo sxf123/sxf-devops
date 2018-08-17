@@ -1,0 +1,2 @@
+include:
+  - member-core.install

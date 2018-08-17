@@ -1,0 +1,48 @@
+{% extends "common/table_base.html" %}
+{% block content_title %}
+    中间件列表
+{% endblock %}
+{% block uri %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li><a href="#">中间件管理</a></li>
+{% endblock %}
+{% block search_text %}
+    {{ middleware_search_form.mid_search_name }}
+{% endblock %}
+{% block search_select %}
+    {{ middleware_search_form.mid_search_type }}
+{% endblock %}
+{% block add_and_search %}
+    <button class="btn btn-info flat" id="search_middleware"><i class="fa fa-search"> </i> 搜索</button>
+    <button class="btn btn-info flat" data-toggle="modal" data-target="#edit_project"><a href="{% url 'middleware_add' %}" style="color: #fff;"><i class="fa fa-plus"> </i>新增中间件</a></button>
+{% endblock %}
+{% block table_id %}
+
+{% endblock %}
+{% block table_header %}
+    <th>中间件名称</th>
+    <th>中间件类型</th>
+    <th>中间件版本</th>
+{% endblock %}
+{% block table_content %}
+    {% for m in middleware %}
+        <tr>
+            <td>{{ m.mid_name }}</td>
+            <td>{{ m.mid_type }}</td>
+            <td>{{ m.mid_version }}</td>
+            <td>
+                <a href="/cmdb/middleware/install/{{ m.mid_name }}/">
+                    <button class="btn btn-success btn-sm">单点安装</button>
+                </a>
+                <a href="/cmdb/middleware/update/{{ m.id }}/">
+                    <button class="btn btn-warning btn-sm edit_btn" data-toggle="modal" data-target="#edit_project">修 改</button>
+                </a>
+                {% if request.user.is_superuser %}
+                <a href="/cmdb/middleware/delete/{{ m.id }}/">
+                    <button class="btn btn-danger btn-sm del_btn" data-toggle="modal" data-target="#del_project">删 除</button>
+                </a>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}

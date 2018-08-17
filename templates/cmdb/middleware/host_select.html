@@ -1,0 +1,42 @@
+{% extends "common/base.html" %}
+{% load pagination_tags %}
+{% block content_title %}
+    主机列表
+    <small>主机列表</small>
+{% endblock %}
+{% block uri %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li class="active"><a href="{% url 'middleware' %}">中间件管理</a></li>
+    <li class="active"><a href="">主机列表</a></li>
+{% endblock %}
+{% block main_body %}
+    <style>
+    .select2-container--default .select2-selection--single {
+        height:34px;
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 0px;
+    }
+    </style>
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+                <div class="col-xs-3 no-padding">
+                    {{ host_select_form.host_name }}
+                </div>
+                <div class="col-xs-3">
+                    <button id="mid_install" class="btn btn-info">安 装</button>
+                </div>
+            </div>
+              <div class="box-body">
+                  <div id="host-info">
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+{% endblock %}

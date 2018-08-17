@@ -1,0 +1,2 @@
+include:
+  - facepp-agent.install

@@ -1,0 +1,2 @@
+include:
+  - supply-print.install

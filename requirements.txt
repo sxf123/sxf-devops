@@ -1,0 +1,6 @@
+django==1.10.2
+djangorestframework
+dj-pagination
+requests
+djangorestframework-jwt
+pymysql

@@ -1,0 +1,2 @@
+include:
+  - warehouse-core.install

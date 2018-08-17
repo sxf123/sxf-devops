@@ -1,0 +1,89 @@
+{% extends "common/base.html" %}
+{% load pagination_tags %}
+{% block content_title %}
+    DNS域名列表
+    <small>DNS域名列表</small>
+{% endblock %}
+{% block uri %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li class="active"><a href="{% url 'domainname' %}">DNS域名管理</a></li>
+    <li><a href="">DNS搜索列表</a></li>
+{% endblock %}
+{% block main_body %}
+    <style>
+    .select2-container--default .select2-selection--single {
+        height:34px;
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 0px;
+    }
+    </style>
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+            <form action="" method="post">
+              <div class="col-xs-3 no-padding">
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                  </div>
+                    {{ domainname_search_form.search_dns }}
+                </div>
+              <span id="host_tip" style="position: absolute;left: 0;top: 40px;color: #ff5959;font-size: 12px;display: none">{% block warning %}{% endblock %}</span>
+              </div>
+              <div class="col-xs-2">
+                  {{ domainname_search_form.search_ip_address }}
+              </div>
+              <div class="col-xs-3 no-padding">
+                  <button class="btn btn-info flat" id="search_domainname"><i class="fa fa-search"> </i> 搜索</button>
+                  <button class="btn btn-info flat" data-toggle="modal" data-target="#edit_project"><a href="{% url 'domainname_add' %}" style="color: #fff;"><i class="fa fa-plus"> </i>新增域名</a></button>
+              </div>
+            </form>
+            </div>
+            <div class="box-body">
+              <table class="table1 table text-center flat" id="domainnametable">
+                <thead>
+                  <tr>
+                        <th>DNS域名</th>
+                        <th>IP地址</th>
+                        <th>项目模块</th>
+                        <th>项目模块url</th>
+                    <th>
+                      <div>操作</div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% autopaginate domainname 10 %}
+                    {% for d in domainname %}
+                    <tr>
+                        <td>{{ d.dns }}</td>
+                        <td>{{ d.ip.ip_address }}</td>
+                        <td>{{ d.project_module.moduel_name }}</td>
+                        <td>{{ d.project_module_url }}</td>
+                        <td>
+                            <a href="">
+                                <button class="btn btn-success btn-sm">模 块</button>
+                            </a>
+                            <a href="/cmdb/domainname/update/{{ d.id }}/">
+                                <button class="btn btn-warning btn-sm edit_btn" data-toggle="modal" data-target="#edit_project">修 改</button>
+                            </a>
+                            {% if request.user.is_superuser %}
+                            <a href="/cmdb/domainname/delete/{{ d.id }}/">
+                                <button class="btn btn-danger btn-sm del_btn" data-toggle="modal" data-target="#del_project">删 除</button>
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+                {% paginate %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

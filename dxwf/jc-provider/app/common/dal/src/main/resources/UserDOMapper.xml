@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jcgroup.demo.common.dal.mapper.UserDOMapper">
+    <!-- 自动生成,请修改 USER.xml -->
+    <resultMap id="BaseResultMap"  type="com.jcgroup.demo.common.dal.dataobject.UserDO">
+            <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+            <result column="USERNAME" property="username" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,USERNAME,CREATE_TIME,UPDATE_TIME
+    </sql>
+
+
+        <!--插入表:USER-->
+        <insert id="insert" >
+                    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO USER(
+            
+            USERNAME
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+            
+            #{username,jdbcType=VARCHAR}
+            ,now()
+            ,now()
+        )
+        </insert>
+
+        <!--更新表:USER-->
+        <update id="update" >
+                    UPDATE /*MS-USER-UPDATE*/ USER
+            SET
+                    USERNAME        = #{username,jdbcType=VARCHAR}
+                    ,UPDATE_TIME     = now()
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </update>
+
+        <!--根据主键删除数据:USER-->
+        <delete id="deleteByPrimary" >
+                    DELETE /*MS-USER-DELETEBYPRIMARY*/ FROM USER
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </delete>
+
+        <!--根据主键获取数据:USER-->
+        <select id="getByPrimary" resultMap="BaseResultMap">
+                    SELECT /*MS-USER-GETBYPRIMARY*/  <include refid="Base_Column_List" /> FROM USER
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </select>
+
+        <!--取数据:USER-->
+        <select id="listUsers" resultMap="BaseResultMap">
+                    SELECT /*MS-USER-LISTUSERS*/  <include refid="Base_Column_List" /> FROM USER
+        </select>
+</mapper>

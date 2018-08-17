@@ -1,0 +1,2 @@
+include:
+  - retail-core.install

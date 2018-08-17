@@ -1,0 +1,7 @@
+retail-core
+retail-admin
+retail-gateway
+retail-order
+report-task
+report-core
+report-admin

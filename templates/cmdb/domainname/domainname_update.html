@@ -1,0 +1,67 @@
+{% extends "common/form_base.html" %}
+{% block content_title %}
+    编辑域名
+    <small>修改域名</small>
+{% endblock %}
+{% block child_uri %}
+    <li><a href="{% url 'domainname' %}">域名管理</a></li>
+    <li><a href="" class="active">修改域名</a></li>
+{% endblock %}
+{% block add_form %}
+    <style>
+        .select2-container--default .select2-selection--single {
+            height: 34px;
+            background-color: #fff;
+            border: 1px solid #aaa;
+            border-radius: 0px;
+        }
+    </style>
+    <form action="" method="post" class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name">DNS名称</label>
+                    {{ domainname_update_form.dns }}
+                    {% ifequal repeat_errors "true"  %}
+                        <span>DNS域名已经存在</span>
+                    {% endifequal %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="department_name">域名类型</label>
+                    {{ domainname_update_form.domain_type }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="department_name">DNS对应IP地址</label>
+                    {{ domainname_update_form.ip }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="stage_name">应用模块</label>
+                    {{ domainname_update_form.project_module }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name">模块访问url</label>
+                    {{ domainname_update_form.project_module_url }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name">环境</label>
+                    {{ domainname_update_form.environment }}
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button class="btn btn-default"><a href="{% url 'domainname' %}">取消</a></button>
+            <button class="btn btn-info" id="add" type="submit">确定</button>
+        </div>
+    </form>
+{% endblock %}

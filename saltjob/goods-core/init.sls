@@ -1,0 +1,2 @@
+include:
+  - goods-core.install

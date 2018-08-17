@@ -1,0 +1,42 @@
+{% extends "common/base.html" %}
+{% load pagination_tags %}
+{% block content_title %}
+    中间件列表
+    <small>中间件列表</small>
+{% endblock %}
+{% block uri %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li class="active"><a href="#">中间件管理</a></li>
+{% endblock %}
+{% block main_body %}
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-body">
+              <table class="table1 table text-center flat" id="hosttable">
+                <thead>
+                  <tr>
+                        <th>中间件名称</th>
+                        <th>中间件类型</th>
+                        <th>中间件版本</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% autopaginate middlewares 10 %}
+                    {% for m in middlewares %}
+                    <tr>
+                        <td>{{ m.mid_name }}</td>
+                        <td>{{ m.mid_type }}</td>
+                        <td>{{ m.mid_version }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+                {% paginate %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

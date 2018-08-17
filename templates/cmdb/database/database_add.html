@@ -1,0 +1,47 @@
+{% extends "common/form_base.html" %}
+{% block content_title %}
+    编辑数据库实例
+    <small>新增数据库实例</small>
+{% endblock %}
+{% block child_uri %}
+    <li><a href="{% url 'database' %}">实例管理</a></li>
+    <li><a href="" class="active">新增实例</a></li>
+{% endblock %}
+{% block add_form %}
+    <form action="" method="post" class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name">实例名称</label>
+                    {{ database_add_form.instance }}
+                    {% ifequal repeat_errors "true"  %}
+                        <span>数据库实例已经存在</span>
+                    {% endifequal %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="department_name">数据库类型</label>
+                    {{ database_add_form.db_type }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="stage_name">所属集群</label>
+                    {{ database_add_form.cluster }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name">所属主机</label>
+                    {{ database_add_form.host }}
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button class="btn btn-default"><a href="{% url 'database' %}">取消</a></button>
+            <button class="btn btn-info" id="add" type="submit">确定</button>
+        </div>
+    </form>
+{% endblock %}

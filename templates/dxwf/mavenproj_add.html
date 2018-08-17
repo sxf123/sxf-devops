@@ -1,0 +1,41 @@
+{% extends "common/form_base.html" %}
+{% block content_title %}
+    编辑后端脚手架
+    <small>新增脚手架</small>
+{% endblock %}
+{% block child_uri %}
+    <li><a href="{% url 'cluster' %}">脚手架管理</a></li>
+    <li><a href="" class="active">新增脚手架</a></li>
+{% endblock %}
+{% block add_form %}
+    <form action="" method="post" class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name">groupId</label>
+                    {{ mavenproj_add_form.groupId }}
+                    {% ifequal repeat_errors "true"  %}
+                        <span>脚手架已经存在</span>
+                    {% endifequal %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="department_name">artifactId</label>
+                    {{ mavenproj_add_form.artifactId }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="stage_name"></label>
+                    {{ mavenproj_add_form.service_type }}
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button class="btn btn-default"><a href="{% url 'mavenproj' %}">取消</a></button>
+            <button class="btn btn-info" id="add" type="submit">确定</button>
+        </div>
+    </form>
+{% endblock %}

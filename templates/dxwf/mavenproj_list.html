@@ -1,0 +1,78 @@
+{% extends "common/base.html" %}
+{% load pagination_tags %}
+{% block content_title %}
+    项目脚手架
+    <small>后端项目脚手架</small>
+{% endblock %}
+{% block uri %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li class="active"><a href="#">脚手架管理</a></li>
+{% endblock %}
+{% block main_body %}
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <div class="col-xs-3 no-padding">
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                  </div>
+                    {{ mavenproj_search_form.search_artifactId }}
+                </div>
+              <span id="host_tip" style="position: absolute;left: 0;top: 40px;color: #ff5959;font-size: 12px;display: none">{% block warning %}{% endblock %}</span>
+              </div>
+              <div class="col-xs-2">
+                  {{ mavenproj_search_form.search_service_type }}
+              </div>
+              <div class="col-xs-3 no-padding">
+                  <button class="btn btn-info flat" id="search_wf"><i class="fa fa-search"> </i> 搜索</button>
+                  <button class="btn btn-info flat" data-toggle="modal" data-target="#edit_project"><a href="{% url 'mavenproj_add' %}" style="color: #fff;"><i class="fa fa-plus"> </i>新增脚手架</a></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <table class="table1 table text-center flat" id="hosttable">
+                <thead>
+                  <tr>
+                        <th>artifactId</th>
+                        <th>groupId</th>
+                        <th>创建时间</th>
+                    <th>
+                      <div>操作</div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% autopaginate mavenproj 10 %}
+                    {% for m in mavenproj %}
+                    <tr>
+                        <td>{{ m.artifactId }}</td>
+                        <td>{{ m.groupId }}</td>
+                        <td>{{ m.create_time }}</td>
+                        <td>
+                            <a href="">
+                                <button class="btn btn-success btn-sm">模 块</button>
+                            </a>
+                            <a href="/dxwf/mavenproj/download/{{ m.artifactId }}/">
+                                <button class="btn btn-warning btn-sm edit_btn" data-toggle="modal" data-target="#edit_project">下 载</button>
+                            </a>
+                            <a href="/dxwf/mavenproj/delete/{{ m.id }}/">
+                                <button class="btn btn-danger btn-sm del_btn" data-toggle="modal" data-target="#del_project">删 除</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+                {% paginate %}
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+{% endblock %}

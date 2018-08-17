@@ -1,0 +1,2 @@
+include:
+  - report-core.install

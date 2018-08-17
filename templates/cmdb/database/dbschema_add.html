@@ -1,0 +1,56 @@
+{% extends "common/form_base.html" %}
+{% block content_title %}
+    编辑数据库
+    <small>新增数据库</small>
+{% endblock %}
+{% block child_uri %}
+    <li><a href="">数据库管理</a></li>
+    <li><a href="" class="active">新增数据库</a></li>
+{% endblock %}
+{% block add_form %}
+    <form action="" method="post" class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name">数据库名称</label>
+                    {{ dbschema_add_form.schema }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="department_name">数据库连接地址</label>
+                    {{ dbschema_add_form.url }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="stage_name">数据库连接端口</label>
+                    {{ dbschema_add_form.port }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="stage_name">数据库连接用户</label>
+                    {{ dbschema_add_form.user }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="stage_name">数据库连接密码</label>
+                    {{ dbschema_add_form.password }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name">所属实例</label>
+                    {{ dbschema_add_form.instance }}
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button class="btn btn-default"><a href="{% url 'dbschema' %}">取消</a></button>
+            <button class="btn btn-info" id="add" type="submit">确定</button>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>大象集团 | 运维平台</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="{% static 'plugin/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugin/css/font-awesome.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugin/css/ionicons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugin/css/AdminLTE.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugin/css/_all-skins.min.css' %}">
+    <link href="{% static 'plugin/css/select2.css' %}" rel="stylesheet">
+  <script src="{% static 'plugin/js/html5shiv.min.js' %}"></script>
+  <script src="{% static 'plugin/js/respond.min.js' %}"></script>
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <header class="main-header">
+    <a href="#" class="logo">
+      <span class="logo-mini"><b>P</b>ro</span>
+      <span class="logo-lg"><b>资源管理平台</b></span>
+    </a>
+    <nav class="navbar navbar-static-top">
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <span class="hidden-xs">注销</span>
+            </a>
+            <ul class="dropdown-menu" style="width: auto;">
+              <li class="user-header">
+                <p>
+                  <small>Member since Nov. 2012</small>
+                </p>
+              </li>
+              <li class="user-footer">
+                <div class="text-center">
+                  <a href="{% url 'logout' %}" class="btn btn-default btn-flat">退出</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <aside class="main-sidebar">
+    <section class="sidebar">
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">MAIN NAVIGATION</li>
+          {% if request.user.is_staff %}
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-cogs"></i> <span>资源管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+              <li class="active"><a href="{% url 'host' %}"><i class="fa fa-desktop"></i>主机管理</a></li>
+              <li class="active"><a href="{% url 'middleware' %}"><i class="fa fa-cog"></i>中间件管理</a></li>
+              <li class="active"><a href="{% url 'cluster' %}"><i class="fa fa-sitemap"></i>集群管理</a></li>
+              <li class="active"><a href="{% url 'ippool' %}"><i class="fa fa-wifi"></i>IP资源管理</a></li>
+              <li class="active"><a href="{% url 'domainname' %}"><i class="fa fa-signal"></i>DNS域名管理</a></li>
+              <li class="active"><a href="{% url 'database' %}"><i class="fa fa-server"></i>数据库实例管理</a></li>
+              <li class="active"><a href="{% url 'nodegroup' %}"><i class="fa fa-navicon"></i>主机组管理</a></li>
+              <li class="active"><a href="{% url 'dbschema' %}"><i class="fa fa-database"></i>数据库管理</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-list"></i> <span>业务管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+              <li class="active"><a href="{% url 'project' %}"><i class="fa fa-git"></i>项目管理</a></li>
+              <li class="active"><a href="{% url 'projectmodule' %}"><i class="fa fa-gitlab"></i>模块管理</a></li>
+          </ul>
+        </li>
+          {% endif %}
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-table"></i> <span>项目脚手架</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+              {% if request.user.is_staff %}
+              <li class="active"><a href="#"><i class="fa fa-circle-o"></i>前端项目</a></li>
+              {% endif %}
+              <li class="active"><a href="{% url 'mavenproj' %}"><i class="fa fa-circle-o"></i>后端项目</a></li>
+          </ul>
+        </li>
+{#        <li class="treeview">#}
+{#            <a href="">#}
+{#                <i class="fa fa-table"></i> <span>内部系统</span>#}
+{#                <span class="pull-right-container">#}
+{#                    <i class="fa fa-angle-left pull-right"></i>#}
+{#                </span>#}
+{#            </a>#}
+{#            <ul class="treeview-menu">#}
+{#                <li class="active"><a href="http://doc.dx-groups.com/"><i class="fa fa-circle-o"></i>知识库</a></li>#}
+{#                <li class="active"><a href="http://proj.dx-groups.com/"><i class="fa fa-circle-o"></i>Jira</a></li>#}
+{#                <li class="active"><a href="http://git.dx-groups.com/"><i class="fa fa-circle-o"></i>GitLab</a></li>#}
+{#                <li class="active"><a href="http://xiaoyaoji.dx-groups.com/"><i class="fa fa-circle-o"></i>小幺鸡</a></li>#}
+{#            </ul>#}
+{#        </li>#}
+      </ul>
+    </section>
+  </aside>
+  <div class="content-wrapper">
+    <section class="content-header">
+      <h1>
+          {% block content_title %}
+          {% endblock %}
+      </h1>
+      <ol class="breadcrumb">
+          {% block uri %}
+          {% endblock %}
+      </ol>
+    </section>
+      {% block main_body %}
+      {% endblock %}
+  </div>
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 2.4.0
+    </div>
+    reserved
+  </footer>
+</div>
+<script src="{% static 'plugin/js/jquery.min.js' %}"></script>
+<script src="{% static 'plugin/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugin/js/adminlte.min.js' %}"></script
+<script src="{% static 'plugin/js/moment-2.21.0.min.js' %}"></script>
+<script src="{% static 'plugin/js/ajax_post/host_search.js' %}"></script>
+<script src="{% static 'plugin/js/ajax_post/middleware_search.js' %}"></script>
+<script src="{% static 'plugin/js/select2.js' %}"></script>
+<script>
+    $(".select2").select2();
+</script>
+<script src="{% static 'plugin/js/ajax_post/middleware_install.js' %}"></script>
+<script>
+</script>
+</body>
+</html>

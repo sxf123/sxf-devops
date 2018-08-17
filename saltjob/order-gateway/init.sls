@@ -1,0 +1,2 @@
+include:
+  - order-gateway.install

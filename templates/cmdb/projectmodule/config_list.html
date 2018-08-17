@@ -1,0 +1,93 @@
+{% extends "common/base.html" %}
+{% load pagination_tags %}
+{% block content_title %}
+    模块配置文件列表
+    <small>模块配置文件列表</small>
+{% endblock %}
+{% block uri %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li><a href="{% url 'projectmodule' %}">模块列表</a></li>
+    <li class="active"><a href="#">配置文件管理</a></li>
+{% endblock %}
+{% block main_body %}
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+{#            <div class="box-header">#}
+{#              <div class="col-xs-3 no-padding">#}
+{#                <div class="input-group">#}
+{#                  <div class="input-group-addon">#}
+{#                    <i class="fa fa-search"></i>#}
+{#                  </div>#}
+{#                    {{ project_search_form.project_search_name }}#}
+{#                </div>#}
+{#              <span id="host_tip" style="position: absolute;left: 0;top: 40px;color: #ff5959;font-size: 12px;display: none">{% block warning %}{% endblock %}</span>#}
+{#              </div>#}
+{#              <div class="col-xs-2">#}
+{#                  {{ project_search_form.project_search_environment }}#}
+{#              </div>#}
+{#              <div class="col-xs-3 no-padding">#}
+{#                  <button class="btn btn-info flat" id="search_wf"><i class="fa fa-search"> </i> 搜索</button>#}
+{#                  <button class="btn btn-info flat" data-toggle="modal" data-target="#edit_project"><a href="{% url 'project_add' %}" style="color: #fff;"><i class="fa fa-plus"> </i>新增脚手架</a></button>#}
+{#              </div>#}
+{#            </div>#}
+            <div class="box-body">
+              <table class="table1 table text-center flat" id="hosttable">
+                <thead>
+                  <tr>
+                        <th>模块名</th>
+                        <th>配置文件</th>
+                        <th>环境</th>
+                    <th>
+                      <div>操作</div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% autopaginate file_list 10 %}
+                    {% for f in file_list %}
+                    <tr>
+                        <td>{{ module_name }}</td>
+                        <td>{{ f }}</td>
+                        {% ifequal environment "develop" %}
+                            <td>研发环境</td>
+                        {% else %}
+                            {% ifequal environment "test" %}
+                                <td>测试环境</td>
+                            {% else %}
+                                {% ifequal environment "prepare"  %}
+                                    <td>预发环境</td>
+                                {% else %}
+                                    {% ifequal environment "product"  %}
+                                        <td>生产环境</td>
+                                    {% endifequal %}
+                                {% endifequal %}
+                            {% endifequal %}
+                        {% endifequal %}
+                        <td>
+{#                            <a href="">#}
+{#                                <button class="btn btn-success btn-sm">模 块</button>#}
+{#                            </a>#}
+                            <a href="">
+                                <button class="btn btn-warning btn-sm edit_btn" data-toggle="modal" data-target="#edit_project">修 改</button>
+                            </a>
+                            <a href="">
+                                <button class="btn btn-danger btn-sm del_btn" data-toggle="modal" data-target="#del_project">删 除</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+                {% paginate %}
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+{% endblock %}

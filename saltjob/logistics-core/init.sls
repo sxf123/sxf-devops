@@ -1,0 +1,2 @@
+include:
+  - logistics-core.install

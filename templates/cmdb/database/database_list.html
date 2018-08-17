@@ -1,0 +1,79 @@
+{% extends "common/base.html" %}
+{% load pagination_tags %}
+{% block content_title %}
+    数据库实例列表
+    <small>数据库实例列表</small>
+{% endblock %}
+{% block uri %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li class="active"><a href="#">数据库实例管理</a></li>
+{% endblock %}
+{% block main_body %}
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+            <form action="" method="post">
+              <div class="col-xs-3 no-padding">
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                  </div>
+                    {{ database_search_form.search_schema }}
+                </div>
+                <span id="host_tip" style="position: absolute;left: 0;top: 40px;color: #ff5959;font-size: 12px;display: none">{% block warning %}{% endblock %}</span>
+              </div>
+              <div class="col-xs-2">
+                  {{ database_search_form.search_db_type }}
+              </div>
+              <div class="col-xs-3 no-padding">
+                  <button class="btn btn-info flat" id="search_wf"><i class="fa fa-search"> </i> 搜索</button>
+                  <button class="btn btn-info flat" data-toggle="modal" data-target="#edit_project"><a href="{% url 'database_add' %}" style="color: #fff;"><i class="fa fa-plus"> </i>新增数据库实例</a></button>
+              </div>
+            </form>
+            <div class="box-body">
+              <table class="table1 table text-center flat" id="hosttable">
+                <thead>
+                  <tr>
+                      <th>数据库实例名称</th>
+                      <th>数据库类型</th>
+                      <th>集群</th>
+                      <th>主机</th>
+                      <th>
+                        <div>操作</div>
+                      </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% autopaginate database 10 %}
+                    {% for d in database %}
+                    <tr>
+                        <td>{{ d.instance }}</td>
+                        <td>{{ d.db_type }}</td>
+                        <td>{{ d.cluster.cluster_name }}</td>
+                        <td>{{ d.host.host_name }}</td>
+                        <td>
+                            <a href="/cmdb/database/detail/{{ d.instance }}/">
+                                <button class="btn btn-success btn-sm" id="host_update">模 块</button>
+                            </a>
+                            <a href="/cmdb/database/update/{{ d.id }}/">
+                                <button class="btn btn-warning btn-sm edit_btn" data-toggle="modal" data-target="#edit_project">修 改</button>
+                            </a>
+                            {% if request.user.is_superuser %}
+                            <a href="/cmdb/database/delete/{{ d.id }}/">
+                                <button class="btn btn-danger btn-sm del_btn" data-toggle="modal" data-target="#del_project">删 除</button>
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+                {% paginate %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}
