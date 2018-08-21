@@ -8,7 +8,6 @@ from cmdbapi.views.DatabaseView import DatabaseDetail,DatabaseList,DatabaseSearc
 from cmdbapi.views.DomainNameView import DomainNameList,DomainNameDetail,DomainNameSearch,DomainNameDelet,DomainNameUpdateWithId
 from cmdbapi.views.IpPoolView import IpPoolList,IpPoolDetail,IpPollSearch,IpPoolDelete,IpPoolUpdateWithId
 from cmdbapi.views.UserInfoView import UserInfo
-from cmdbapi.views.NodeGroupView import NodeGroupSearch,NodeGroupDetail,NodeGroupList,NodeGroupUpdate,NodeGroupUpdateWithId,NodeGroupDelete
 from cmdbapi.views.DbSchemaView import DbSchemaList,DbSchemaSearch,DbSchemaDetail,DbSchemaDelete,DbSchemaUpdateWithId
 
 urlpatterns = [
@@ -58,10 +57,5 @@ urlpatterns = [
     url(r"^ippool/search/$",IpPollSearch.as_view(),name="ippool_search_api"),
     url(r"^ippool/delete/$",IpPoolDelete.as_view(),name="ippool_delete_api"),
     url(r"^ippool/update/$",IpPoolUpdateWithId.as_view(),name="ippool_update_api"),
-    url(r"^user/info/$",UserInfo.as_view(),name="user_info_api"),
-    url(r"^nodegroup/list/$",NodeGroupList.as_view(),name="nodegroup_list_api"),
-    url(r"^nodegroup/(?P<pk>[0-9]+)/$",NodeGroupDetail.as_view(),name="nodegroup_detail_api"),
-    url(r"^nodegroup/search/$",NodeGroupSearch.as_view(),name="nodegroup_search_api"),
-    url(r"^nodegroup/delete/$",NodeGroupDelete.as_view(),name="nodegroup_delete_api"),
-    url(r"^nodegroup/update/$",NodeGroupUpdateWithId.as_view(),name="nodegroup_update_api"),
+    url(r"^user/info/$",UserInfo.as_view(),name="user_info_api")
 ]

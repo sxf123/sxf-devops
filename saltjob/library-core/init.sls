@@ -1,2 +1,0 @@
-include:
-  - library-core.install

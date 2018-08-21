@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     'dxwf',
     'dj_pagination',
     'cmdbapi',
-    'config_software'
+    'config_software',
+    'deploy',
+    'account'
 ]
 
 MIDDLEWARE = [
@@ -212,3 +214,17 @@ REDIS_PORT = 6379
 DXWF_PKG_DIR = "/root/projdir"
 
 GET_JAVA_PROCESS_SCRIPT = "salt://scripts/get_java_process.sh"
+
+JENKINS_USER = "admin"
+JENKINS_TOKEN = "2b232560aaf2e7c647c8ced87e632484"
+JENKINS_URL = "http://192.168.64.128:8080"
+
+DEPLOY_UPLOAD_PATH = os.path.join(os.path.join(BASE_DIR,"deploy"),"uploadfile")
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.exmail.qq.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "songxiaofeng@zhexinit.com"
+EMAIL_HOST_PASSWORD = "Xiao1234"
+DEFAULT_FROM_MAIL = "songxiaofeng@zhexinit.com"

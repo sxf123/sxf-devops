@@ -1,2 +1,0 @@
-include:
-  - member-admin.install

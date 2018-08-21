@@ -10,17 +10,20 @@ from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from cmdb.models.DbSchema import DbSchema
+from django.contrib.auth.decorators import permission_required
 
 class DatabaseSearchView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_database",raise_exception=True))
     def get(self,request,*args,**kwargs):
         database_search_form = DatabaseSearchForm()
         database = Database.objects.all()
         self.context = {"database_search_form":database_search_form,"database":database}
         return render(request,"cmdb/database/database_list.html",self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_database",raise_exception=True))
     def post(self,request,*args,**kwargs):
         database_search_form = DatabaseSearchForm(request.POST)
         if database_search_form.is_valid():
@@ -39,11 +42,13 @@ class DatabaseAddView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_database",raise_exception=True))
     def get(self,request,*args,**kwargs):
         database_add_form = DatabaseAddForm()
         self.context = {"database_add_form":database_add_form}
         return render(request,"cmdb/database/database_add.html",self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_database",raise_exception=True))
     def post(self,request,*args,**kwargs):
         database_add_form = DatabaseAddForm(request.POST)
         if database_add_form.is_valid():
@@ -75,6 +80,7 @@ class DatabaseUpdateView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_database",raise_exception=True))
     def get(self,request,*args,**kwargs):
         id = kwargs.get("id")
         database = Database.objects.get(pk=id)
@@ -83,6 +89,7 @@ class DatabaseUpdateView(View):
         self.context = {"database_update_form":database_update_form}
         return render(request,"cmdb/database/database_update.html",self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_database",raise_exception=True))
     def post(self,request,*args,**kwargs):
         id = kwargs.get("id")
         database_update_form = DatabaseAddForm(request.POST)
@@ -112,6 +119,7 @@ class DatabaseDeleteView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.delete_database",raise_exception=True))
     def get(self,request,*args,**kwargs):
         id = kwargs.get("id")
         database = Database.objects.get(pk=id)

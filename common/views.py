@@ -40,4 +40,8 @@ class LogoutView(View):
         auth.logout(request)
         return HttpResponsePermanentRedirect(reverse("login"))
 
+def permission_denied(request):
+    return render(request,"common/403.html")
+
+
 

@@ -8,17 +8,20 @@ from django.core.urlresolvers import reverse
 from django.forms.models import model_to_dict
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 
 class IpPoolSearchView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_ippool",raise_exception=True))
     def get(self,request,*args,**kwargs):
         ippool = IpPool.objects.all()
         search_ippool_form = IpSearchForm()
         self.context = {"ippool":ippool,"search_ippool_form":search_ippool_form}
         return render(request, "cmdb/ippool/ippool_list.html", self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_ippool",raise_exception=True))
     def post(self,request,*args,**kwargs):
         ippool_search_form = IpSearchForm(request.POST)
         if ippool_search_form.is_valid():
@@ -37,11 +40,13 @@ class IpPoolAddView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_ippool",raise_exception=True))
     def get(self,request,*args,**kwargs):
         ippool_add_form = IpAddForm()
         self.context = {"ippool_add_form":ippool_add_form}
         return render(request,"cmdb/ippool/ippool_add.html",self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_ippool",raise_exception=True))
     def post(self,request,*args,**kwargs):
         ippool_add_form = IpAddForm(request.POST)
         if ippool_add_form.is_valid():
@@ -70,6 +75,7 @@ class IpPoolUpdateView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_ippool",raise_exception=True))
     def get(self,request,*args,**kwargs):
         id = kwargs.get("id")
         ippool = IpPool.objects.get(pk=id)
@@ -78,6 +84,7 @@ class IpPoolUpdateView(View):
         self.context = {"ippool_update_form":ippool_update_form}
         return render(request,"cmdb/ippool/ippool_update.html",self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_ippool",raise_exception=True))
     def post(self,request,*args,**kwargs):
         id = kwargs.get("id")
         ippool_update_form = IpAddForm(request.POST)
@@ -107,6 +114,7 @@ class IpPoolDeleteView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.delete_ippool",raise_exception=True))
     def get(self,request,*args,**kwargs):
         id = kwargs.get("id")
         ippool = IpPool.objects.get(pk=id)

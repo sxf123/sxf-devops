@@ -1,2 +1,0 @@
-include:
-  - facepp-core.install

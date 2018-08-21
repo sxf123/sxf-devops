@@ -17,6 +17,10 @@ from django.conf.urls import url,include
 from django.contrib import admin
 from common import views
 from rest_framework_jwt.views import obtain_jwt_token
+from django.conf.urls import handler403
+from common.views import permission_denied
+
+handler403 = permission_denied
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -26,5 +30,8 @@ urlpatterns = [
     url(r'^dxwf/',include('dxwf.urls')),
     url(r'^api/',include('cmdbapi.urls')),
     url(r'^api-auth/',obtain_jwt_token),
-    url(r'^import/',include('import_data.urls'))
+    url(r'^import/',include('import_data.urls')),
+    url(r'^jenkinsapi/',include('jenkinsapi.urls')),
+    url(r'^deploy/',include('deploy.urls')),
+    url(r'^account/',include('account.urls'))
 ]

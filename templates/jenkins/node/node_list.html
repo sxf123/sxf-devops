@@ -1,0 +1,72 @@
+{% extends "common/base.html" %}
+{% load pagination_tags %}
+{% block content_title %}
+    Jenkins节点列表
+    <small>Jenkins节点列表</small>
+{% endblock %}
+{% block uri %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li class="active"><a href="#">节点管理</a></li>
+{% endblock %}
+{% block main_body %}
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+            <form action="" method="post">
+              <div class="col-xs-3 no-padding">
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                  </div>
+                    {{ jenkins_search_form.search_node_name }}
+                </div>
+                <span id="host_tip" style="position: absolute;left: 0;top: 40px;color: #ff5959;font-size: 12px;display: none">{% block warning %}{% endblock %}</span>
+              </div>
+              <div class="col-xs-3 no-padding">
+                  <button class="btn btn-info flat" id="search_wf"><i class="fa fa-search"> </i> 搜索</button>
+                  <button class="btn btn-info flat" data-toggle="modal" data-target="#edit_project"><a href="{% url 'jenkins_add_node' %}" style="color: #fff;"><i class="fa fa-plus"> </i>新增Jenkins节点</a></button>
+              </div>
+            </form>
+            <div class="box-body">
+              <table class="table1 table text-center flat" id="hosttable">
+                <thead>
+                  <tr>
+                        <th>节点名称</th>
+                        <th>是否在线</th>
+                    <th>
+                      <div>操作</div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% autopaginate node_list 10 %}
+                    {% for n in node_list %}
+                    <tr>
+                        <td>{{ n.name }}</td>
+                        <td>{{ n.offline }}</td>
+                        <td>
+                            <a href="/cmdb/cluster/hostinfo/{{ c.cluster_name }}/">
+                                <button class="btn btn-success btn-sm" id="host_update">模 块</button>
+                            </a>
+                            <a href="/cmdb/cluster/update/{{ c.id }}/">
+                                <button class="btn btn-warning btn-sm edit_btn" data-toggle="modal" data-target="#edit_project">修 改</button>
+                            </a>
+                            {% if request.user.is_superuser %}
+                            <a href="/cmdb/cluster/delete/{{ c.id }}/">
+                                <button class="btn btn-danger btn-sm del_btn" data-toggle="modal" data-target="#del_project">删 除</button>
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+                {% paginate %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

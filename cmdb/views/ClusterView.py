@@ -7,17 +7,20 @@ from django.http import HttpResponsePermanentRedirect
 from django.core.urlresolvers import reverse
 from django.forms.models import model_to_dict
 from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import permission_required
 
 class ClusterSearchView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_cluster",raise_exception=True))
     def get(self,request,*args,**kwargs):
         cluster_search_form = ClusterSearchForm()
         cluster = Cluster.objects.all()
         self.context = {"cluster_search_form":cluster_search_form,"cluster":cluster}
         return render(request, "cmdb/cluster/cluster_list.html", self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_cluster",raise_exception=True))
     def post(self,request,*args,**kwargs):
         cluster_search_form = ClusterSearchForm(request.POST)
         if cluster_search_form.is_valid():
@@ -37,11 +40,13 @@ class ClusterAddView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_cluster",raise_exception=True))
     def get(self,request,*args,**kwargs):
         cluster_add_form = ClusterAddForm()
         self.context = {"cluster_add_form":cluster_add_form}
         return render(request, "cmdb/cluster/cluster_add.html", self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_cluster",raise_exception=True))
     def post(self,request,*args,**kwargs):
         cluster_add_form = ClusterAddForm(request.POST)
         if cluster_add_form.is_valid():
@@ -65,6 +70,7 @@ class ClusterUpdateView(View):
     def __init__(self):
         context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_cluster",raise_exception=True))
     def get(self,request,*args,**kwargs):
         id = kwargs.get("id")
         cluster = Cluster.objects.get(pk=id)
@@ -73,6 +79,7 @@ class ClusterUpdateView(View):
         self.context = {"cluster_update_form":cluster_update_form}
         return render(request,"cmdb/cluster/cluster_update.html",self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_cluster",raise_exception=True))
     def post(self,request,*args,**kwargs):
         cluster_update_form = ClusterAddForm(request.POST)
         id = kwargs.get("id")
@@ -96,6 +103,7 @@ class ClusterDeleteView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.delete_cluster",raise_exception=True))
     def get(self,reqeust,*args,**kwargs):
         id = kwargs.get("id")
         cluster = Cluster.objects.get(pk=id)

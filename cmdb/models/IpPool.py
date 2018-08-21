@@ -13,3 +13,6 @@ class IpPool(models.Model):
     class Meta:
         verbose_name = "ip地址信息"
         verbose_name_plural = verbose_name
+        permissions = (
+            ("scan_ippool","Can scan ippool info"),
+        )

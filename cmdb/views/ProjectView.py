@@ -7,17 +7,20 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.forms.models import model_to_dict
+from django.contrib.auth.decorators import permission_required
 
 class ProjectSearchView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_project",raise_exception=True))
     def get(self,request,*args,**kwargs):
         project_search_form = ProjectSearchForm()
         project = Project.objects.all()
         self.context = {"project_search_form":project_search_form,"project":project}
         return render(request, "cmdb/project/project_list.html", self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_project",raise_exception=True))
     def post(self,request,*args,**kwargs):
         project_search_form = ProjectSearchForm(request.POST)
         if project_search_form.is_valid():
@@ -32,11 +35,13 @@ class ProjectAddView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_project",raise_exception=True))
     def get(self,request,*args,**kwargs):
         project_add_form = ProjectAddForm()
         self.context = {"project_add_form":project_add_form}
         return render(request, "cmdb/project/project_add.html", self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_project",raise_exception=True))
     def post(self,request,*args,**kwargs):
         project_add_form = ProjectAddForm(request.POST)
         if project_add_form.is_valid():
@@ -58,6 +63,7 @@ class ProjectUpdateView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_project",raise_exception=True))
     def get(self,request,*args,**kwargs):
         id = kwargs.get("id")
         project = Project.objects.get(pk=id)
@@ -66,6 +72,7 @@ class ProjectUpdateView(View):
         self.context = {"project_update_form":project_update_form}
         return render(request, "cmdb/project/project_update.html", self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_project",raise_exception=True))
     def post(self,request,*args,**kwargs):
         id = kwargs.get("id")
         project_updata_form = ProjectAddForm(request.POST)
@@ -89,6 +96,7 @@ class ProjectDeleteView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.delete_project",raise_exception=True))
     def get(self,request,*args,**kwargs):
         id = kwargs.get("id")
         project = Project.objects.get(pk=id)

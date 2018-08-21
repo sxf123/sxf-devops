@@ -1,2 +1,0 @@
-include:
-  - sysj-gateway.install

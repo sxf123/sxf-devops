@@ -1,0 +1,42 @@
+{% extends "common/base.html" %}
+{% block content_title %}
+    升级详细信息
+    <small>升级详细信息</small>
+{% endblock %}
+{% block uri %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li class="active"><a href="{% url 'deploy_task_list' %}">升级管理</a></li>
+    <li class="active"><a href="#">升级详细信息</a></li>
+{% endblock %}
+{% block main_body %}
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">billing sql执行结果</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ billing_run_res }}
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">pay sql执行结果</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ pay_run_res }}
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">jar包上传结果</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ jar_run_res }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

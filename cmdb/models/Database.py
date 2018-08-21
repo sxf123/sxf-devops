@@ -14,3 +14,6 @@ class Database(models.Model):
     class Meta:
         verbose_name = "数据库实例"
         verbose_name_plural = verbose_name
+        permissions = (
+            ("scan_database","Can scan database info"),
+        )

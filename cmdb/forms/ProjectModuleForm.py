@@ -45,15 +45,16 @@ class ProjectModuleAddForm(forms.Form):
         widget = forms.Select(attrs={"id":"module_project","class":"form-control"}),
         required = False
     )
-    cluster = forms.MultipleChoiceField(
-        widget = forms.SelectMultiple(attrs={"id":"module_cluster","class":"form-control"}),
-        required = False
+    cluster = forms.ModelMultipleChoiceField(
+        widget = forms.SelectMultiple(attrs={"id":"module_cluster","class":"form-control select2"}),
+        required = False,
+        queryset = Cluster.objects.all()
     )
     def __init__(self,*args,**kwargs):
         super(ProjectModuleAddForm,self).__init__(*args,**kwargs)
         module_project_choice = list(Project.objects.all().values_list("id","name"))
         module_project_choice.insert(0,("","请选择"))
-        module_cluster_choices = list(Cluster.objects.all().values_list("id","cluster_name"))
+        # module_cluster_choices = list(Cluster.objects.all().values_list("id","cluster_name"))
         self.fields["project"].widget.choices = module_project_choice
-        self.fields["cluster"].choices = module_cluster_choices
+        # self.fields["cluster"].choices = module_cluster_choices
 

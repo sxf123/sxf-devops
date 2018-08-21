@@ -9,7 +9,6 @@ from cmdb.views.IpPoolView import IpPoolSearchView,IpPoolAddView,IpPoolUpdateVie
 from cmdb.views.DomainNameView import DomainNameSearchView,DomainNameAddView,DomainNameUpdateView,DomainNameDeleteView
 from cmdb.views.DatabaseView import DatabaseSearchView,DatabaseAddView,DatabaseUpdateView,DatabaseDeleteView,DatabaseDetail
 from cmdb.views.WebHook import WebHookTrigger
-from cmdb.views.NodeGroupView import NodeGroupSearchView,NodeGroupAddView,NodeGroupUpdateView,NodeGroupDeleteView,NodeGroupDetailView
 from cmdb.views.DbSchemaView import DbSchemaSearchView,DbSchemaAddView,DbSchemaUpdateView
 
 urlpatterns = [
@@ -60,10 +59,5 @@ urlpatterns = [
     url(r"^dbschema/$",csrf_exempt(DbSchemaSearchView.as_view()),name="dbschema"),
     url(r"^dbschema/add/$",csrf_exempt(DbSchemaAddView.as_view()),name="dbschema_add"),
     url(r"^dbschema/update/(?P<id>[0-9]+)/$",csrf_exempt(DbSchemaUpdateView.as_view()),name="dbschema_update"),
-    url(r"^webhook/info/$",csrf_exempt(WebHookTrigger.as_view()),name="webhook_info"),
-    url(r"^nodegroup/$",csrf_exempt(NodeGroupSearchView.as_view()),name="nodegroup"),
-    url(r"^nodegroup/add/$",csrf_exempt(NodeGroupAddView.as_view()),name="nodegroup_add"),
-    url(r"^nodegroup/update/(?P<id>[0-9]+)/$",csrf_exempt(NodeGroupUpdateView.as_view()),name="nodegroup_update"),
-    url(r"^nodegroup/delete/(?P<id>[0-9]+)/$",csrf_exempt(NodeGroupDeleteView.as_view()),name="nodegroup_delete"),
-    url(r"^nodegroup_detail/(?P<nodegroup>(.*))/host/$",NodeGroupDetailView.as_view(),name="nodegroup_detail")
+    url(r"^webhook/info/$",csrf_exempt(WebHookTrigger.as_view()),name="webhook_info")
 ]

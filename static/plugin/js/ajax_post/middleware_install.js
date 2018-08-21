@@ -1,13 +1,15 @@
 $("#mid_install").on("click",function () {
     var host = $("#select2-select_host-container").text();
+    var midware = $("#midware").text();
+    console.log(midware);
     if(host != ""){
         $.ajax({
             type: "post",
             url: "http://127.0.0.1:8000/cmdb/middleware/install/",
             data: {
                 "target": host,
-                "target_type": "glob",
-                "midware":"nginx",
+                "midware":midware,
+                "expr_form":"glob"
             },
             success: function (rst) {
                 var info = rst.install_res.return[0][host];

@@ -1,2 +1,0 @@
-include:
-  - logistics-passageway.install

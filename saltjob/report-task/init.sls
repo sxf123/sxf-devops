@@ -1,2 +1,0 @@
-include:
-  - report-task.install

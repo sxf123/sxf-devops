@@ -1,2 +1,0 @@
-include:
-  - purchase-core.install

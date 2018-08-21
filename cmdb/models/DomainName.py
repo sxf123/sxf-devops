@@ -15,3 +15,6 @@ class DomainName(models.Model):
     class Meta:
         verbose_name = "dns域名信息"
         verbose_name_plural = verbose_name
+        permissions = (
+            ("scan_domainname","Can scan domainname"),
+        )

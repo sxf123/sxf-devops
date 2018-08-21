@@ -1,2 +1,0 @@
-include:
-  - wechat-admin.install

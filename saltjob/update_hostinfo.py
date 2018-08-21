@@ -6,7 +6,7 @@ from devops.settings import GET_JAVA_PROCESS_SCRIPT
 from cmdb.models.IpPool import IpPool
 
 def update_host_info(hostname):
-    token = get_token(hostname)
+    token = get_token()
     data = {
         "tgt":hostname,
         "fun":"grains.items"
@@ -23,7 +23,7 @@ def update_host_info(hostname):
     host.save()
 
 def update_host_cluster(hostname):
-    token = get_token(hostname)
+    token = get_token()
     data = {
         "tgt": hostname,
         "fun": "cmd.script",
@@ -34,30 +34,43 @@ def update_host_cluster(hostname):
     module_list = [m.strip(".jar") for m in modules.split('\n')]
     return module_list
 
+def get_minions():
+    token = get_token()
+    data = {
+        "fun": "key.list_all"
+    }
+    salt_api_object = SaltAPI(data,SALT_REST_URL,token)
+    minions = salt_api_object.wheelrun()["return"][0]["data"]["return"]["minions"]
+    return minions
+
 def update_host_ip(hostname):
-    token = get_token(hostname)
+    token = get_token()
     data = {
         "tgt": hostname,
         "fun": "grains.item",
         "arg": "ip4_interfaces"
     }
-    salt_api_object = SaltAPI(data,SALT_REST_URL,token)
-    ip_info_dict = salt_api_object.cmdrun()["return"][0][hostname]["ip4_interfaces"]
-    for k,v in ip_info_dict.items():
-        if k == "br0" or k == "eth0":
-            if len(v) != 0:
-                ip_info = v[0]
-    gateway = "{}.1".format(".".join(ip_info.split(".")[0:3]))
-    ip_segment = "{}.0/24".format(".".join(ip_info.split(".")[0:3]))
-    ippool = IpPool.objects.filter(ip_address=ip_info)
-    if not ippool.exists():
-        IpPool.objects.create(
-            ip_address=ip_info,
-            ip_type = "local",
-            gateway = gateway,
-            ip_segment = ip_segment,
-            host = Host.objects.get(host_name=hostname)
-        )
+    minions = get_minions()
+    if hostname in minions:
+        salt_api_object = SaltAPI(data,SALT_REST_URL,token)
+        ip_info_dict = salt_api_object.cmdrun()["return"][0][hostname]["ip4_interfaces"]
+        for k,v in ip_info_dict.items():
+            if k == "br0" or k == "eth0":
+                if len(v) != 0:
+                    ip_info = v[0]
+        gateway = "{}.1".format(".".join(ip_info.split(".")[0:3]))
+        ip_segment = "{}.0/24".format(".".join(ip_info.split(".")[0:3]))
+        ippool = IpPool.objects.filter(ip_address=ip_info)
+        if not ippool.exists():
+            IpPool.objects.create(
+                ip_address=ip_info,
+                ip_type = "local",
+                gateway = gateway,
+                ip_segment = ip_segment,
+                host = Host.objects.get(host_name=hostname)
+            )
+        return 1
+    return 0
 
 
 

@@ -5,5 +5,4 @@ from .MiddleWare import MiddleWare
 from .Project import Project
 from .ProjectModule import ProjectModule
 from .DomainName import DomainName
-from .NodeGroup import NodeGroup
 from .DbSchema import DbSchema

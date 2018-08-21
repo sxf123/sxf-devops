@@ -1,2 +1,0 @@
-include:
-  - supply-task.install

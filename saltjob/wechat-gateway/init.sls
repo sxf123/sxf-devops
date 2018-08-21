@@ -1,2 +1,0 @@
-include:
-  - wechat-gateway.install

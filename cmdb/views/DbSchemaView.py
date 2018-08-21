@@ -12,17 +12,20 @@ from cmdb.models.Database import Database
 from django.http import HttpResponsePermanentRedirect
 from django.core.urlresolvers import reverse
 from django.forms.models import model_to_dict
+from django.contrib.auth.decorators import permission_required
 
 class DbSchemaSearchView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_dbschema",raise_exception=True))
     def get(self,request,*args,**kwargs):
         dbschema_search_form = DbSchemaSearchForm()
         dbschema = DbSchema.objects.all()
         self.context = {"dbschema":dbschema,"dbschema_search_form":dbschema_search_form}
         return render(request,"cmdb/database/dbschema_list.html",self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_dbschema",raise_exception=True))
     def post(self,request,*args,**kwargs):
         search_schema = request.POST["search_schema"]
         search_instance = request.POST["search_instance"]
@@ -33,11 +36,13 @@ class DbSchemaAddView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_dbschema",raise_exception=True))
     def get(self,request,*args,**kwargs):
         dbschema_add_form = DbSchemaAddForm()
         self.context = {"dbschema_add_form":dbschema_add_form}
         return render(request,"cmdb/database/dbschema_add.html",self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_schema",raise_exception=True))
     def post(self,request,*args,**kwargs):
         dbschema_add_form = DbSchemaAddForm(request.POST)
         if dbschema_add_form.is_valid():
@@ -67,6 +72,7 @@ class DbSchemaUpdateView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_dbschema",raise_exception=True))
     def get(self,request,*args,**kwargs):
         id = kwargs.get("id")
         dbschema = DbSchema.objects.get(pk=id)
@@ -75,6 +81,7 @@ class DbSchemaUpdateView(View):
         self.context = {"dbschema_update_form":dbschema_update_form}
         return render(request,"cmdb/database/dbschema_update.html",self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_dbschema",raise_exception=True))
     def post(self,request,*args,**kwargs):
         id = kwargs.get("id")
         dbschema_update_form = DbSchemaAddForm(request.POST)

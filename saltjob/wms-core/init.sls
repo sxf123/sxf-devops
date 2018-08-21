@@ -1,2 +1,0 @@
-include:
-  - wms-core.install

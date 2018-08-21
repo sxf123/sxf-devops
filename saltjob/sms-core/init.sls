@@ -1,2 +1,0 @@
-include:
-  - sms-core.install

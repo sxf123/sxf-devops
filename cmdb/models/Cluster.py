@@ -11,3 +11,6 @@ class Cluster(models.Model):
     class Meta:
         verbose_name = "集群"
         verbose_name_plural = verbose_name
+        permissions = (
+            ("scan_cluster","Can scan cluster info"),
+        )

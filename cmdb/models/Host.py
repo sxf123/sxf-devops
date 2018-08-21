@@ -1,6 +1,5 @@
 from django.db import models
 from cmdb.models.Cluster import Cluster
-from cmdb.models.NodeGroup import NodeGroup
 
 usage_type = (
     ("app","应用"),
@@ -18,7 +17,6 @@ class Host(models.Model):
     memory = models.CharField(max_length=255,null=True,blank=True,verbose_name="内存大小")
     environment = models.CharField(max_length=255,blank=True,null=True,verbose_name="环境")
     cluster = models.ManyToManyField(Cluster,null=True,blank=True,verbose_name="集群",related_query_name="host")
-    nodegroup = models.ForeignKey(NodeGroup,blank=True,null=True,verbose_name="saltstack主机组")
     host_usage = models.CharField(max_length=255,blank=True,null=True,verbose_name="主机用途",choices=usage_type)
     host_type = models.CharField(max_length=255,blank=True,null=True,verbose_name="主机类型")
 
@@ -27,3 +25,6 @@ class Host(models.Model):
     class Meta:
         verbose_name = "主机"
         verbose_name_plural = verbose_name
+        permissions = (
+            ("scan_host","Can scan a host"),
+        )

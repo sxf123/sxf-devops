@@ -1,2 +1,0 @@
-include:
-  - cargo-core.install

@@ -1,0 +1,56 @@
+{% extends "common/form_base.html" %}
+{% block content_title %}
+    编辑Jenkins节点
+    <small>新增节点</small>
+{% endblock %}
+{% block child_uri %}
+    <li><a href="{% url 'jenkins_search_node' %}">节点管理</a></li>
+    <li><a href="" class="active">新增节点</a></li>
+{% endblock %}
+{% block add_form %}
+    <form action="" method="post" class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name">节点名称</label>
+                    {{ jenkins_add_node_form.name }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="department_name">端口</label>
+                    {{ jenkins_add_node_form.port }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="stage_name">用户</label>
+                    {{ jenkins_add_node_form.user }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name">credentialsId</label>
+                    {{ jenkins_add_node_form.credentialsId }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name">节点IP</label>
+                    {{ jenkins_add_node_form.host }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name">javaPath</label>
+                    {{ jenkins_add_node_form.javaPath }}
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button class="btn btn-default"><a href="{% url 'jenkins_search_node' %}">取消</a></button>
+            <button class="btn btn-info" id="add" type="submit">确定</button>
+        </div>
+    </form>
+{% endblock %}

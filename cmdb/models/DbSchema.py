@@ -14,3 +14,6 @@ class DbSchema(models.Model):
     class Meta:
         verbose_name_plural = "数据库"
         verbose_name = verbose_name_plural
+        permissions = (
+            ("scan_dbschema","Can scan dbschema info"),
+        )

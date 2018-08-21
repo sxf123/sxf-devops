@@ -15,3 +15,6 @@ class Project(models.Model):
     class Meta:
         verbose_name = "项目"
         verbose_name_plural = verbose_name
+        permissions = (
+            ("scan_project","Can scan project info"),
+        )

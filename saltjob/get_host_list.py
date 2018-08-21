@@ -11,12 +11,12 @@ mid_dict = {
 
 def get_host_list(midware):
     r = redis.Redis(host=REDIS_HOST,port=REDIS_PORT)
-    res = r.lrange(midware,0,-1)
+    res = r.smembers(midware)
     return res
 
 def set_host(midware,host):
     r = redis.Redis(host=REDIS_HOST,port=REDIS_PORT)
-    r.rpush(midware,host)
+    r.sadd(midware,host)
 
 def get_mid_list(tgt):
     r = redis.Redis(host = REDIS_HOST,port = REDIS_PORT)
@@ -56,3 +56,6 @@ def del_host(key):
     tgt = key
     r = redis.Redis(host=REDIS_HOST,port=REDIS_PORT)
     r.delete(key)
+def del_mid_host(midware,host):
+    r = redis.Redis(host=REDIS_HOST,port=REDIS_PORT)
+    r.srem(midware,host)

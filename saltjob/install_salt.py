@@ -2,13 +2,13 @@ from saltjob.salt_http_api import SaltAPI
 from devops.settings import SALT_REST_URL
 from saltjob.get_api_token import get_token
 
-def run_state(tgt,tgt_type,midware):
+def run_state(tgt,expr_form,midware):
     data = {
         "client":"local",
         "tgt":tgt,
         "fun":"state.sls",
         "arg":"{}".format(midware),
-        "tgt_type": tgt_type,
+        "expr_form": expr_form,
         "kwargs": {
             "test": "True"
         }

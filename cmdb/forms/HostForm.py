@@ -1,7 +1,6 @@
 from django import forms
 from django.forms import TextInput,Select,MultipleChoiceField,SelectMultiple
 from cmdb.models.Cluster import Cluster
-from cmdb.models.NodeGroup import NodeGroup
 from saltjob.get_host_list import get_host_list,get_mid_list
 from cmdb.models.MiddleWare import MiddleWare
 from cmdb.models.Host import usage_type
@@ -38,29 +37,23 @@ class HostAddForm(forms.Form):
     environment = forms.CharField(
         widget = Select(attrs={"id":"environment","class":"form-control"},choices=env_type)
     )
-    cluster = forms.MultipleChoiceField(
-        widget = forms.SelectMultiple(attrs={"id":"cluster","class":"form-control"}),
-        required = False
-    )
-    nodegroup = forms.CharField(
-        widget = Select(attrs={"id":"nodegroup","class":"form-control"}),
-        required = False
+    cluster = forms.ModelMultipleChoiceField(
+        widget = forms.SelectMultiple(attrs={"id":"cluster","class":"form-control select2"}),
+        required = False,
+        queryset = Cluster.objects.all()
     )
     host_usage = forms.CharField(
         widget = Select(attrs={"id":"host_usage","class":"form-control"},choices=usage_type)
     )
     midware = forms.MultipleChoiceField(
-        widget=forms.SelectMultiple(attrs={"id":"midware","class":"form-control"}),
+        widget=forms.SelectMultiple(attrs={"id":"midware","class":"form-control select2"}),
         required=False,
     )
     def __init__(self,*args,**kwargs):
         super(HostAddForm,self).__init__(*args,**kwargs)
-        cluster_choice = list(Cluster.objects.all().values_list("id","cluster_name"))
-        nodegroup_choice = list(NodeGroup.objects.all().values_list("id","nodegroup"))
-        nodegroup_choice.insert(0,("","请选择"))
+        # cluster_choice = list(Cluster.objects.all().values_list("id","cluster_name"))
         middleware_choice = list(MiddleWare.objects.all().values_list("mid_name","mid_name"))
-        self.fields["cluster"].choices = cluster_choice
-        self.fields["nodegroup"].widget.choices = nodegroup_choice
+        # self.fields["cluster"].choices = cluster_choice
         self.fields["midware"].choices = middleware_choice
 
 class HostSelectForm(forms.Form):
@@ -70,7 +63,7 @@ class HostSelectForm(forms.Form):
     def __init__(self,*args,**kwargs):
         midware = kwargs.pop("midware",None)
         super(HostSelectForm,self).__init__(*args,**kwargs)
-        host_list = get_host_list(midware)
+        host_list = list(get_host_list(midware))
         host_choice = []
         for i in range(0,len(host_list)):
             for h in get_mid_list(host_list[i])["middleware_list"]:

@@ -1,0 +1,48 @@
+{% extends "common/base.html" %}
+{% load pagination_tags %}
+{% block content_title %}
+    minion列表
+    <small>minion列表</small>
+{% endblock %}
+{% block uri %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li class="active"><a href="{% url 'script_manage' %}">脚本管理</a></li>
+    <li class="active"><a href="">minion列表</a></li>
+    <li class="active"><a href="" id="script_name">{{ script.script_name }}</a></li>
+{% endblock %}
+{% block main_body %}
+    <style>
+    .select2-container--default .select2-selection--single {
+        height:34px;
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 0px;
+    }
+    </style>
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+              <form method="post" action="">
+                <div class="box-header">
+                    <div class="col-xs-3 no-padding">
+                        {{ minion_select_form.hostname }}
+                    </div>
+                    <div class="col-xs-3">
+                        <button id="script_execute" class="btn btn-info">执 行</button>
+                    </div>
+                </div>
+                  <div class="box-body">
+                      <div id="execute_result">
+                          {% if execute_res %}
+                              {{ execute_res }}
+                          {% endif %}
+                      </div>
+                  </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+{% endblock %}

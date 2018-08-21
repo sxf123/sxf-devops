@@ -1,0 +1,188 @@
+{% extends "common/form_base.html" %}
+{% block content_title %}
+    升级项目
+{% endblock %}
+{% block child_uri %}
+    <li><a href="" class="active">升级项目</a></li>
+{% endblock %}
+{% block add_form %}
+    <style>
+    .select2-container--default .select2-selection--single {
+        height:34px;
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 0px;
+    }
+    </style>
+    <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name" id="project_label">项目名称<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.project }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="department_name" id="svn_path_label">svn地址<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.svn_path }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="stage_name" id="principal_label">负责人<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.principal }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name" id="update_date_label">更新日期<span style="color: #F00;;">(不能为空)</span></label>
+                    <div class="input-group date" id="datetimepicker1">
+                        {{ deploy_form.update_date }}
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    {% ifequal date_error "True" %}
+                        <span style="color: #F00;;">更新日期必须为当前日期</span>
+                    {% endifequal %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name" id="update_project_label">升级项目<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.update_project }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name" id="tag_date_label">tag日期<span style="color: #F00;;">(不能为空)</span></label>
+                    <div class="input-group date" id="datetimepicker2">
+                        {{ deploy_form.tag_date }}
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    {% ifequal date_error "True"  %}
+                        <span style="color: #F00;;">tag日期必须为当前日期</span>
+                    {% endifequal %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name" id="tag_version_label">tag版本<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.tag_version }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name" id="desc_label">版本简要说明<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.desc }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name" id="bug_fix_label">修改的缺陷<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.bug_fix }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name" id="update_function_label">新增的功能<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.update_function }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="solve_problem_label">已解决的问题<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.solve_problem }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name" id="exist_risk_label">可能存在的风险<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.exist_risk }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name" id="rollback_label">出现问题回滚措施<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.rollback }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name" id="is_monitored_label">新上线功能是否可监控<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.is_monitored }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name" id="instance_label">数据库实例<span style="color: #F00">(不能为空)</span></label>
+                    {{ deploy_form.instance }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="dbschema_label">数据库schema<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.dbschema }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name" id="develop_person_label">版本开发人员<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.develop_person }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name" id="monitored_person_label">升级后监控人员<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.monitored_person }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name" id="verify_person_label">升级后功能验证人员<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.verify_person }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="sql_exec_label">需要执行的sql<span style="color: #F00">(不能为空)</span></label>
+                    {{ deploy_form.sql_exec }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="need_test_label">是否需要测试验证<span style="color: #F00">(不能为空)</span></label>
+                    {{ deploy_form.need_test }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="handle_person_label">升级操作人<span style="color: #F00">(不能为空)</span></label>
+                    {{ deploy_form.handle_person }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="deploy_type_label">升级类型<span style="color: #F00">(不能为空)</span></label>
+                    {{ deploy_form.deploy_type }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="email_person_label">接受邮件的人<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.email_person }}
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-default"><a href="{% url 'deploy_task_list' %}">取消</a></button>
+            <button class="btn btn-info" id="add" type="submit">确定</button>
+            {% ifequal too_many_upgrade "True"  %}
+                <span style="color: #F00;;">一天内更新次数超过三次，不能更新</span>
+            {% endifequal %}
+        </div>
+    </form>
+{% endblock %}

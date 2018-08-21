@@ -1,0 +1,41 @@
+{% extends "common/form_base.html" %}
+{% block content_title %}
+    上传文件
+{% endblock %}
+{% block child_uri %}
+    <li><a href="" class="active">上传文件</a></li>
+{% endblock %}
+{% block add_form %}
+    <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name" id="sql_file_label">billing sql文件</label>
+                    {{ upload_file_form.sql_file_billing }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="sql_file_pay">pay sql文件</label>
+                    {{ upload_file_form.sql_file_pay }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name" id="jqr_file_label">jar文件</label>
+                    {{ upload_file_form.jar_file }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="upload_desc_label">项目上线详细信息<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ upload_file_form.upload_desc }}
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-default"><a href="{% url 'execute_file_list' %}">取消</a></button>
+            <button class="btn btn-info" id="upload_file" type="submit">确定</button>
+        </div>
+    </form>
+{% endblock %}

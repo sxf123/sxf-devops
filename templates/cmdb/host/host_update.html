@@ -8,6 +8,14 @@
     <li><a href="" class="active">修改主机</a></li>
 {% endblock %}
 {% block add_form %}
+    <style>
+    .select2-container--default .select2-selection--single {
+        height:34px;
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 0px;
+    }
+    </style>
     <form action="" method="post" class="form-horizontal">
         <div class="box-body">
             <div class="form-group">
@@ -44,12 +52,6 @@
                 <div class="col-xs-6">
                     <label for="describe_text">集群</label>
                     {{ host_update_form.cluster }}
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-xs-6">
-                    <label for="describe_text">主机组</label>
-                    {{ host_update_form.nodegroup }}
                 </div>
             </div>
             <div class="form-group">

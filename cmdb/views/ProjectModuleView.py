@@ -12,17 +12,20 @@ from django.contrib.auth.decorators import login_required
 from saltjob.generate_state_file import write_yaml_file,create_state_dir
 import os
 from common.disconf_api import config_list,get_appId
+from django.contrib.auth.decorators import permission_required
 
 class ProjectModuleSearchView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_projectmodule",raise_exception=True))
     def get(self,request,*args,**kwargs):
         projectmodule_search_form = ProjectModuleSearchForm()
         projectmodule = ProjectModule.objects.all()
         self.context = {"projectmodule_search_form":projectmodule_search_form,"projectmodule":projectmodule}
         return render(request, "cmdb/projectmodule/projectmodule_list.html", self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_projectmodule",raise_exception=True))
     def post(self,request,*args,**kwargs):
         projectmodule_search_form = ProjectModuleSearchForm(request.POST)
         if projectmodule_search_form.is_valid():
@@ -41,11 +44,13 @@ class ProjectModuleAddView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_projectmodule",raise_exception=True))
     def get(self,request,*args,**kwargs):
         projectmodule_add_form = ProjectModuleAddForm()
         self.context = {"projectmodule_add_form":projectmodule_add_form}
         return render(request, "cmdb/projectmodule/projectmodule_add.html", self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_projectmodule",raise_exception=True))
     def post(self,request,*args,**kwargs):
         projectmodule_add_form = ProjectModuleAddForm(request.POST)
         if projectmodule_add_form.is_valid():
@@ -54,7 +59,7 @@ class ProjectModuleAddView(View):
             module_service_type = request.POST["service_type"]
             module_git_url = request.POST["git_url"]
             module_project_id = request.POST["project"]
-            module_cluster_id_list = request.POST.getlist("cluster")
+            module_cluster_list = request.POST.getlist("cluster")
             if module_project_id == "":
                 module_project = None
             else:
@@ -67,8 +72,8 @@ class ProjectModuleAddView(View):
                 project = module_project
             )
             projectmodule.save()
-            for c in module_cluster_id_list:
-                projectmodule.cluster.add(Cluster.objects.get(pk=c))
+            for c in module_cluster_list:
+                projectmodule.cluster.add(c)
             projectmodule.save()
             name = module_project.name.split("-")[0]
             yaml_dict = {"projectmodule":module_name,"project":name}
@@ -88,6 +93,7 @@ class ProjectModuleUpdateView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_projectmodule",raise_exception=True))
     def get(self,request,*args,**kwargs):
         id = kwargs.get("id")
         projectmodule = ProjectModule.objects.get(pk=id)
@@ -97,6 +103,7 @@ class ProjectModuleUpdateView(View):
         self.context = {"projectmodule_update_form":projectmodule_update_form}
         return render(request, "cmdb/projectmodule/projectmodule_update.html", self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_projectmodule",raise_exception=True))
     def post(self,request,*args,**kwargs):
         id = kwargs.get("id")
         projectmodule_update_form = ProjectModuleAddForm(request.POST)
@@ -110,7 +117,7 @@ class ProjectModuleUpdateView(View):
                 module_project = None
             else:
                 module_project = Project.objects.get(pk=module_project_id)
-            module_cluster_id_list = request.POST.getlist("cluster")
+            module_cluster_list = request.POST.getlist("cluster")
             projectmodule = ProjectModule.objects.get(pk=id)
             projectmodule.module_name = module_name
             projectmodule.module_desc = module_desc
@@ -118,8 +125,8 @@ class ProjectModuleUpdateView(View):
             projectmodule.git_url = module_git_url
             projectmodule.project = module_project
             projectmodule.cluster.clear()
-            for c in module_cluster_id_list:
-                projectmodule.cluster.add(Cluster.objects.get(pk=c))
+            for c in module_cluster_list:
+                projectmodule.cluster.add(c)
             projectmodule.save()
             return HttpResponsePermanentRedirect(reverse("projectmodule"))
         else:
@@ -130,6 +137,7 @@ class ProjectModuleDeleteView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.delete_projectmodule",raise_exception=True))
     def get(self,request,*args,**kwargs):
         id = kwargs.get("id")
         projectmodule = ProjectModule.objects.get(pk=id)

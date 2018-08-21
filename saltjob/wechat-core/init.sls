@@ -1,2 +1,0 @@
-include:
-  - wechat-core.install

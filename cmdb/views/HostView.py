@@ -9,22 +9,24 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.forms.models import model_to_dict
 from cmdb.models.Cluster import Cluster
-from cmdb.models.NodeGroup import NodeGroup
 from saltjob.update_hostinfo import update_host_info,update_host_cluster,update_host_ip
-from saltjob.get_host_list import set_host,set_list,get_mid_list,del_host
+from saltjob.get_host_list import set_host,set_list,get_mid_list,del_host,del_mid_host
 from django.db import connection
 from cmdb.models.MiddleWare import MiddleWare
+from django.contrib.auth.decorators import permission_required
 
 class HostSearchView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_host",raise_exception=True))
     def get(self,request,*args,**kwargs):
         host_search_form = HostSearchForm()
         host = Host.objects.all()
         self.context = {"host":host,"host_search_form":host_search_form}
         return render(request, "cmdb/host/host_list.html", self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_host",raise_exception=True))
     def post(self,request,*args,**kwargs):
         host_search_form = HostSearchForm(request.POST)
         if host_search_form.is_valid():
@@ -39,15 +41,18 @@ class HostSearchView(View):
         else:
             self.context = {"host_search_form":host_search_form,"errors":host_search_form.errors}
             return render(request,"cmdb/host/host_list.html",self.context)
+
 class HostAddView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_host",raise_exception=True))
     def get(self,request,*args,**kwargs):
         host_add_form = HostAddForm()
         self.context = {"host_add_form":host_add_form}
         return render(request, "cmdb/host/host_add.html", self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_host",raise_exception=True))
     def post(self,request,*args,**kwargs):
         host_add_form = HostAddForm(request.POST)
         if host_add_form.is_valid():
@@ -61,22 +66,24 @@ class HostAddView(View):
                 osrelease = request.POST["osrelease"]
                 operations = request.POST["os"]
                 environment = request.POST["environment"]
-                cluster_id_list = request.POST.getlist("cluster")
-                nodegroup_id = request.POST["nodegroup"]
-                if nodegroup_id == "":
-                    nodegroup = None
-                else:
-                    nodegroup = NodeGroup.objects.get(pk=nodegroup_id)
                 host_usage = request.POST["host_usage"]
-                host = Host(host_name=hostname,kernel=kernel,osrelease=osrelease,os=operations,environment=environment,nodegroup=nodegroup,host_usage=host_usage)
+                cluster_list = request.POST.getlist("cluster")
+                host = Host(host_name=hostname,kernel=kernel,osrelease=osrelease,os=operations,environment=environment,host_usage=host_usage)
                 host.save()
-                update_host_ip(hostname)
-                midware = request.POST.getlist("midware")
-                if len(midware) != 0:
-                    for m in midware:
-                        set_host(m,hostname)
-                set_list(hostname,midware)
-                return HttpResponsePermanentRedirect(reverse("host"))
+                for c in cluster_list:
+                    host.cluster.add(c)
+                if update_host_ip(hostname) == 0:
+                    host.delete()
+                    self.context = {"host_add_form": host_add_form,"minions_is_not_exist": "true"}
+                    return render(request,"cmdb/host/host_add.html",self.context)
+                elif update_host_ip(hostname) == 1:
+                    if host.host_usage == "mid":
+                        midware = request.POST.getlist("midware")
+                        if len(midware) != 0:
+                            for m in midware:
+                                set_host(m,hostname)
+                            set_list(hostname,midware)
+                    return HttpResponsePermanentRedirect(reverse("host"))
         else:
             self.context = {"host_add_form":host_add_form,"errors":host_add_form.errors}
             return render(request, "cmdb/host/host_add.html", self.context)
@@ -85,6 +92,7 @@ class HostUpdateView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_host",raise_exception=True))
     def get(self,request,*args,**kwargs):
         id = kwargs.get("id")
         host = Host.objects.get(pk=id)
@@ -93,6 +101,7 @@ class HostUpdateView(View):
         self.context = {"host_update_form":host_update_form}
         return render(request, "cmdb/host/host_update.html", self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_host",raise_exception=True))
     def post(self,request,*args,**kwargs):
         id = kwargs.get("id")
         host_update_form = HostAddForm(request.POST)
@@ -103,14 +112,11 @@ class HostUpdateView(View):
             host.osrelease = request.POST["osrelease"]
             host.os = request.POST["os"]
             host.environment = request.POST["environment"]
-            nodegroup_id = request.POST["nodegroup"]
             host.host_usage = request.POST["host_usage"]
-            if nodegroup_id == "":
-                nodegroup = None
-            else:
-                nodegroup = NodeGroup.objects.get(pk=nodegroup_id)
-            host.nodegroup = nodegroup
             host.save()
+            cluster_list = request.POST.getlist("cluster")
+            for c in cluster_list:
+                host.cluster.add(c)
             return HttpResponsePermanentRedirect(reverse("host"))
         else:
             self.context = {"host_update_form":host_update_form}
@@ -120,10 +126,15 @@ class HostDeleteView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.delete_host",raise_exception=True))
     def get(self,request,*args,**kwargs):
         id = kwargs.get("id")
         host = Host.objects.get(pk=id)
         hostname = host.host_name
+        if host.host_usage == "mid":
+            mid_list = get_mid_list(hostname)["middleware_list"]
+            for m in mid_list:
+                del_mid_host(m["name"],hostname)
         del_host(hostname)
         host.delete()
         return HttpResponsePermanentRedirect(reverse("host"))
@@ -163,6 +174,7 @@ class HostAppUpdateInfoView(View):
                     host.cluster.add(Cluster.objects.get(cluster_name=cluster_name))
         host.save()
         return HttpResponseRedirect(reverse("host"))
+
 class HostMidUpdateInfoView(View):
     def __init__(self):
         self.context = {}
@@ -203,7 +215,6 @@ class HostDbUpdateInfoView(View):
         hostname = kwargs.get("hostname")
         update_host_info(hostname)
         return HttpResponseRedirect(reverse("host"))
-
 
 class HostProjectModuelView(View):
     def __init__(self):

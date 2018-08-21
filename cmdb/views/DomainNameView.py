@@ -12,16 +12,20 @@ from django.contrib.auth.decorators import login_required
 from common.append_dns import append_domainname
 from common.append_dns import sed_domainname
 from common.append_dns import comment_domainname
+from django.contrib.auth.decorators import permission_required
+
 class DomainNameSearchView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_domainname",raise_exception=True))
     def get(self,request,*args,**kwargs):
         domainname_search_form = DomainNameSearchForm()
         domainname = DomainName.objects.all()
         self.context = {"domainname_search_form":domainname_search_form,"domainname":domainname}
         return render(request, "cmdb/domainname/domainname_list.html", self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_domainname",raise_exception=True))
     def post(self,request,*args,**kwargs):
         domainname_search_form = DomainNameSearchForm(request.POST)
         if domainname_search_form.is_valid():
@@ -41,11 +45,13 @@ class DomainNameAddView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_domainname",raise_exception=True))
     def get(self,request,*args,**kwargs):
         domainname_add_form = DomainNameAddForm()
         self.context = {"domainname_add_form":domainname_add_form}
         return render(request,"cmdb/domainname/domainname_add.html",self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_domainname",raise_exception=True))
     def post(self,request,*args,**kwargs):
         domainname_add_form = DomainNameAddForm(request.POST)
         if domainname_add_form.is_valid():
@@ -78,6 +84,7 @@ class DomainNameUpdateView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_domainname",raise_exception=True))
     def get(self,request,*args,**kwargs):
         id = kwargs.get("id")
         domainname = DomainName.objects.get(pk=id)
@@ -86,6 +93,7 @@ class DomainNameUpdateView(View):
         self.context = {"domainname_update_form":domainname_update_form}
         return render(request,"cmdb/domainname/domainname_update.html",self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_domainname",raise_exception=True))
     def post(self,request,*args,**kwargs):
         id = kwargs.get("id")
         domainname_update_form = DomainNameAddForm(request.POST)
@@ -116,6 +124,7 @@ class DomainNameDeleteView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.delete_domainname",raise_exception=True))
     def get(self,request,*args,**kwargs):
         id = kwargs.get("id")
         domainname = DomainName.objects.get(pk=id)

@@ -1,2 +1,0 @@
-include:
-  - card-core.install

@@ -11,17 +11,20 @@ from django.contrib.auth.decorators import login_required
 from saltjob.install_salt import run_state
 from cmdb.forms.HostForm import HostSelectForm
 from saltjob.get_host_list import modify_list
+from django.contrib.auth.decorators import permission_required
 
 class MiddlewareSearchView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_middleware",raise_exception=True))
     def get(self,request,*args,**kwargs):
         middleware_search_form = MiddlewareSearchForm()
         middleware = MiddleWare.objects.all()
         self.context = {"middleware":middleware,"middleware_search_form":middleware_search_form}
         return render(request, "cmdb/middleware/middleware_list.html", self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.scan_middleware",raise_exception=True))
     def post(self,request,*args,**kwargs):
         middleware_search_form = MiddlewareSearchForm()
         if middleware_search_form.is_valid():
@@ -38,11 +41,13 @@ class MiddlewareAddView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_middleware",raise_exception=True))
     def get(self,request,*args,**kwargs):
         middleware_add_form = MiddlewareAddForm()
         self.context = {"middleware_add_form":middleware_add_form}
         return render(request, "cmdb/middleware/middleware_add.html", self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.add_middleware",raise_exception=True))
     def post(self,request,*args,**kwargs):
         middleware_add_form = MiddlewareAddForm(request.POST)
         if middleware_add_form.is_valid():
@@ -65,6 +70,7 @@ class MiddlewareUpdateView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_middleware",raise_exception=True))
     def get(self,request,*args,**kwargs):
         id = kwargs.get("id")
         middleware = MiddleWare.objects.get(pk=id)
@@ -73,6 +79,7 @@ class MiddlewareUpdateView(View):
         self.context = {"middleware_update_form":middleware_update_form}
         return render(request, "cmdb/middleware/middleware_update.html", self.context)
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.change_middleware",raise_exception=True))
     def post(self,request,*args,**kwargs):
         id = kwargs.get("id")
         middleware_update_form = MiddlewareAddForm(request.POST)
@@ -92,6 +99,7 @@ class MiddlewareDeleteView(View):
     def __init__(self):
         self.context = {}
     @method_decorator(login_required)
+    @method_decorator(permission_required("cmdb.delete_middleware",raise_exception=True))
     def get(self,request,*args,**kwargs):
         id = kwargs.get("id")
         middleware = MiddleWare.objects.get(pk=id)
@@ -105,14 +113,14 @@ class MiddleWareInstall(View):
     def get(self,request,*args,**kwargs):
         midware = kwargs.get("midware")
         host_select_form = HostSelectForm(midware=midware)
-        self.context = {"host_select_form":host_select_form}
+        self.context = {"host_select_form":host_select_form,"middleware":midware}
         return render(request,"cmdb/middleware/host_select.html",self.context)
     @method_decorator(login_required)
     def post(self,request,*args,**kwargs):
         tgt = request.POST["target"]
         midware = request.POST["midware"]
-        tgt_type = request.POST["tgt_type"]
-        resp = run_state(tgt,tgt_type,midware)
+        expr_form = request.POST["expr_form"]
+        resp = run_state(tgt,expr_form,midware)
         modify_list(tgt,midware)
         self.context = {"install_res":resp}
         return JsonResponse(self.context)

@@ -1,0 +1,71 @@
+{% extends "common/form_base.html" %}
+{% block content_title %}
+    编辑用户
+    <small>新增用户</small>
+{% endblock %}
+{% block child_uri %}
+    <li><a href="{% url 'user_list' %}">用户管理</a></li>
+    <li><a href="" class="active">新增用户</a></li>
+{% endblock %}
+{% block add_form %}
+    <form action="" method="post" class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name">用户名</label>
+                    {{ user_add_form.username }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="department_name">密码</label>
+                    {{ user_add_form.password }}
+                    {% if errors %}
+                        <span>{{ errors }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="stage_name">姓</label>
+                    {{ user_add_form.first_name }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name">名字</label>
+                    {{ user_add_form.last_name }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name">邮箱</label>
+                    {{ user_add_form.email }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name">is_superuser</label>
+                    {{ user_add_form.is_superuser }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name">is_staff</label>
+                    {{ user_add_form.is_staff }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name">用户组</label>
+                    {{ user_add_form.group }}
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button class="btn btn-default"><a href="{% url 'user_list' %}">取消</a></button>
+            <button class="btn btn-info" id="add" type="submit">确定</button>
+        </div>
+    </form>
+{% endblock %}
