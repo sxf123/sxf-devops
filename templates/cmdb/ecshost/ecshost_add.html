@@ -1,0 +1,64 @@
+{% extends "common/form_base.html" %}
+{% block content_title %}
+    编辑ECS主机
+    <small>新增ECS主机</small>
+{% endblock %}
+{% block child_uri %}
+    <li><a href="{% url 'cluster' %}">ECS主机管理</a></li>
+    <li><a href="" class="active">新增ECS主机</a></li>
+{% endblock %}
+{% block add_form %}
+    <form action="" method="post" class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name">ECS实例ID</label>
+                    {{ ecshost_add_form.instance_id }}
+                    {% ifequal ecshost_repeat "True" %}
+                        <span style="color: #F00;;">注意：ECS主机已存在，不能重复添加</span>
+                    {% endifequal %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="desc_label">ECS主机描述</label>
+                    {{ ecshost_add_form.desc }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="local_ip_label">ECS内网IP</label>
+                    {{ ecshost_add_form.local_ip }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="internet_ip_label">ECS公网IP</label>
+                    {{ ecshost_add_form.internet_ip }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="elastic_ip_label">ECS弹性IP</label>
+                    {{ ecshost_add_form.elastic_ip }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="network_type_label">ECS网络类型</label>
+                    {{ ecshost_add_form.network_type }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="minion_id_label">minion_id</label>
+                    {{ ecshost_add_form.minion_id }}
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-default"><a href="{% url 'ecshost_list' %}">取消</a></button>
+            <button class="btn btn-info" id="add" type="submit">确定</button>
+        </div>
+    </form>
+{% endblock %}

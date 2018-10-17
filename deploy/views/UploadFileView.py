@@ -33,6 +33,10 @@ class UploadFileView(View):
             sql_file_billing = upload_file_form.cleaned_data.get("sql_file_billing")
             sql_file_pay = upload_file_form.cleaned_data.get("sql_file_pay")
             jar_file = upload_file_form.cleaned_data.get("jar_file")
+            # if sql_file_billing.name.split(".")[-1] != "zip" or sql_file_pay.name.split(".")[-1] != "zip" or jar_file.name.split(".")[-1] != "jar":
+            #     self.context = {"upload_file_form":upload_file_form,"file_error":"True"}
+            #     return render(request,"deploy/upload_file.html",self.context)
+            # else:
             upload_file = UploadFile(
                 sql_billing_file=sql_file_billing.name if sql_file_billing is not None else None,
                 sql_pay_file=sql_file_pay.name if sql_file_pay is not None else None,
@@ -57,6 +61,7 @@ class UploadFileView(View):
                 file_name_jar = os.path.join(jar_dir_name, jar_file.name)
                 handle_uploaded_file(file_name_jar, jar_file)
             return HttpResponsePermanentRedirect(reverse("execute_file_list"))
+
         else:
             self.context = {"deploy_form": upload_file_form, "errors": upload_file_form.errors}
             return render(request, "deploy/upload_file.html", self.context)

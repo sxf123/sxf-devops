@@ -1,8 +1,8 @@
 #/bin/bash
 
-PYENV_DIR=/root/py36env/bin/activate
-PROJ_DIR=/root/devops-dev/devops
-UWSGI_FILE=/root/devops-dev/devops/devops_dev_uwsgi.ini
+PYENV_DIR=/opt/pyenv36/bin/activate
+PROJ_DIR=/opt/zhexin_ops
+UWSGI_FILE=${PROJ_DIR}/devops_prod_uwsgi.ini
 
 if [[ $# -eq 0 ]];
 then
@@ -11,10 +11,11 @@ fi
 
 start() {
     source $PYENV_DIR
-    pid=`ps -ef | grep devosp_dev_uwsgi | grep -v grep | wc -l`
+    pid=`ps -ef | grep devops_prod_uwsgi | grep -v grep | wc -l`
     if [[ $pid -gt 0 ]];
     then
-        uwsgi --stop $PROJ_DIR/devops.pid
+        cd ${PROJ_DIR}
+        uwsgi --stop ${PROJ_DIR}/devops.pid
     fi
     uwsgi --ini $UWSGI_FILE
 }
@@ -24,7 +25,8 @@ stop() {
     pid=`ps -ef | grep devops_dev_uwsgi | wc -l`
     if [[ $pid -gt 0 ]];
     then
-        uwsgi --stop $PROJ_DIR/devops.pid
+        cd ${PROJ_DIR}
+        uwsgi --stop ${PROJ_DIR}/devops.pid
     fi
 }
 

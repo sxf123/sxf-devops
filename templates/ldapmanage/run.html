@@ -1,0 +1,29 @@
+{% extends "common/base.html" %}
+{% block content_title %}
+    ldap添加用户结果
+{% endblock %}
+{% block uri %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+{% endblock %}
+{% block main_body %}
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">LDAP添加用户结果</h3>
+                    </div>
+                    <div class="panel-body">
+                        <h4 align="center">你添加的名字是: {{ name }}</h4>
+                        <p align="center">员工工号: {{ job_number }}</p>
+                        <p align="center">姓名全拼: {{ username }}&nbsp;&nbsp;邮箱: {{ email }}</p>
+                        <p align="center">一级部门: {{ first_department }}&nbsp;&nbsp;二级部门: {{ second_department }}&nbsp;&nbsp;uidNumber: {{ uidNumber }}</p>
+                        <p align="center">执行返回代码 (0是成功,非0失败): {{ code }} &emsp;</p>
+                        <p align="center">执行返回结果: {{ stderr }} {{ stdout }} &emsp;</p>
+                        <p align="center"><a href="{% url 'index' %}">返回</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

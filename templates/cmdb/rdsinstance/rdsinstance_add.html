@@ -1,0 +1,50 @@
+{% extends "common/form_base.html" %}
+{% block content_title %}
+    编辑RDS实例
+    <small>新增RDS实例</small>
+{% endblock %}
+{% block child_uri %}
+    <li><a href="{% url 'projectmodule' %}">RDS实例管理</a></li>
+    <li><a href="" class="active">新增RDS实例</a></li>
+{% endblock %}
+{% block add_form %}
+    <form action="" method="post" class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name">RDS实例名称</label>
+                    {{ rds_instance_add_form.instance_name }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="department_name">RDS实例地址</label>
+                    {{ rds_instance_add_form.instance_url }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="stage_name">RDS实例端口</label>
+                    {{ rds_instance_add_form.instance_port }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="charge_name">数据库类型</label>
+                    {{ rds_instance_add_form.db_type }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="describe_text">RDS实例描述</label>
+                    {{ rds_instance_add_form.instance_desc }}
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button class="btn btn-default"><a href="{% url 'rdsinstance_list' %}">取消</a></button>
+            <button class="btn btn-info" id="addtrue" type="submit">确定</button>
+        </div>
+    </form>
+{% endblock %}

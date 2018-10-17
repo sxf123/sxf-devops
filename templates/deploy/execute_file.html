@@ -3,22 +3,15 @@
     文件上传执行
 {% endblock %}
 {% block child_uri %}
+    <li><a href="{% url 'execute_file_list' %}">上传文件列表</a></li>
     <li><a href="" class="active">文件上传执行</a></li>
 {% endblock %}
 {% block add_form %}
-    <style>
-    .select2-container--default .select2-selection--single {
-        height:34px;
-        background-color: #fff;
-        border: 1px solid #aaa;
-        border-radius: 0px;
-    }
-    </style>
-    <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+    <div class="form-horizontal">
         <div class="box-body">
             <div class="form-group">
                 <div class="col-xs-6">
-                    <label for="pro_name" id="billing_file_label">billing sql文件</label>
+                    <label id="billing_file_label">billing sql文件</label>
                     {{ file_execute_form.sql_billing_file }}
                 </div>
             </div>
@@ -34,10 +27,15 @@
                     {{ file_execute_form.jar_file }}
                 </div>
             </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <input type="hidden" id="upload_file_id" value="{{ upload_file.id }}"/>
+                </div>
+            </div>
         </div>
         <div class="box-footer">
             <button class="btn btn-default"><a href="{% url 'execute_file_list' %}">取消</a></button>
-            <button class="btn btn-info" id="add" type="submit">确定</button>
+            <button class="btn btn-info" id="execute_file" type="submit">确定</button>
         </div>
-    </form>
+    </div>
 {% endblock %}

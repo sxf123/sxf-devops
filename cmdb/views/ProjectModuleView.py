@@ -98,7 +98,6 @@ class ProjectModuleUpdateView(View):
         id = kwargs.get("id")
         projectmodule = ProjectModule.objects.get(pk=id)
         projectmodule_dict = model_to_dict(projectmodule)
-        # print(projectmodule_dict["module_service_type"])
         projectmodule_update_form = ProjectModuleAddForm(projectmodule_dict)
         self.context = {"projectmodule_update_form":projectmodule_update_form}
         return render(request, "cmdb/projectmodule/projectmodule_update.html", self.context)

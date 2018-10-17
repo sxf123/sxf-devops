@@ -1,0 +1,37 @@
+{% extends "common/form_base.html" %}
+{% block content_title %}
+    SQL上传
+{% endblock %}
+{% block child_uri %}
+    <li><a href="" class="active">SQL上传</a></li>
+{% endblock %}
+{% block add_form %}
+    <style>
+    .select2-container--default .select2-selection--single {
+        height:34px;
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 0px;
+    }
+    .select2-container--default .select2-selection--multiple {
+        height:34px;
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 0px;
+    }
+    </style>
+    <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+        <div class="box-body">
+            <div class="form-group" id="sqlupload_rdsinstance_form">
+                <div class="col-xs-6">
+                    <label id="sqlupload_rdsinstance_label">数据库实例</label>
+                    {{ sql_upload_form.sqlupload_rdsinstance }}
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-default"><a href="{% url 'sql_file_list' %}">取消</a></button>
+            <button class="btn btn-info" id="add" type="submit">确定</button>
+        </div>
+    </form>
+{% endblock %}

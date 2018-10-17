@@ -8,6 +8,7 @@ class Database(models.Model):
     cluster = models.ForeignKey(Cluster,null=True,blank=True,verbose_name="集群")
     host = models.ForeignKey(Host,null=True,blank=True,verbose_name="主机")
 
+
     def __str__(self):
         return self.schema
 

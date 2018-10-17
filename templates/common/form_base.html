@@ -1,10 +1,6 @@
 {% extends "common/base.html" %}
-{#{% block content_title %}#}
-{#    主机编辑#}
-{#    <small>新增主机</small>#}
-{#{% endblock %}#}
 {% block uri %}
-    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> 控制台</a></li>
     {% block child_uri %}{% endblock %}
 {% endblock %}
 {% block main_body %}

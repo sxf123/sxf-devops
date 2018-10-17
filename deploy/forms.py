@@ -1,10 +1,11 @@
-from django.forms import TextInput,Select,DateInput,FileInput,Textarea,SelectMultiple
+from django.forms import TextInput,Select,DateInput,FileInput,Textarea,SelectMultiple,ClearableFileInput
 from django import forms
 from cmdb.models.ProjectModule import ProjectModule
 from django.contrib.auth.models import User
 from saltjob import handle_script
-from cmdb.models.Database import Database
-from cmdb.models.DbSchema import DbSchema
+from cmdb.models.RdsInstance import RdsInstance
+from cmdb.models.RdsSchema import RdsSchema
+from django.contrib.auth.models import Group
 
 is_monitored_choice = (
     ("","请选择"),
@@ -30,19 +31,13 @@ class DeploySearchForm(forms.Form):
 
 class DeployForm(forms.Form):
     project = forms.CharField(
-        widget = Select(attrs = {"id":"project","class":"form-control"})
+        widget = Select(attrs = {"id":"project","class":"form-control select2"})
     )
     svn_path = forms.CharField(
         widget = TextInput(attrs = {"id":"svn_path","class":"form-control","placeholder":"请输入svn地址"})
     )
     principal = forms.CharField(
-        widget = Select(attrs = {"id":"principal","class":"form-control"})
-    )
-    update_date = forms.DateField(
-        widget = DateInput(attrs = {"id":"update_date","class":"form-control","placeholder":"请输入升级日期"})
-    )
-    update_project = forms.CharField(
-        widget = Select(attrs = {"id":"update_project","class":"form-control"})
+        widget = Select(attrs = {"id":"principal","class":"form-control select2"})
     )
     tag_date = forms.DateField(
         widget = DateInput(attrs = {"id":"tag_date","class":"form-control","placeholder":"请输入tag日期"})
@@ -71,57 +66,56 @@ class DeployForm(forms.Form):
     is_monitored = forms.CharField(
         widget = Select(attrs = {"id":"is_monitored","class":"form-control"},choices = is_monitored_choice)
     )
-    instance = forms.MultipleChoiceField(
-        widget = SelectMultiple(attrs = {"id":"instance","class":"form-control"}),
-        required=False
-    )
-    dbschema = forms.MultipleChoiceField(
-        widget = SelectMultiple(attrs = {"id":"dbschema","class":"form-control"}),
+    rdsinstance = forms.MultipleChoiceField(
+        widget = SelectMultiple(attrs = {"id":"rdsinstance","class":"form-control select2"}),
         required=False
     )
     develop_person = forms.MultipleChoiceField(
-        widget = SelectMultiple(attrs = {"id":"develop_person","class":"form-control"})
+        widget = SelectMultiple(attrs = {"id":"develop_person","class":"form-control select2"})
     )
     monitored_person = forms.MultipleChoiceField(
-        widget = SelectMultiple(attrs = {"id":"monitored_person","class":"form-control"})
-    )
-    verify_person = forms.MultipleChoiceField(
-        widget = SelectMultiple(attrs = {"id":"verify_person","class":"form-control"})
-    )
-    sql_exec = forms.CharField(
-        widget = Textarea(attrs = {"id":"sql_exec","class":"form-control","placeholder":"请输入需要执行的sql"})
+        widget = SelectMultiple(attrs = {"id":"monitored_person","class":"form-control select2"})
     )
     need_test = forms.CharField(
-        widget = Select(attrs = {"id":"need_test","class":"form-control"},choices=is_monitored_choice)
+        widget = Select(attrs = {"id":"need_test","class":"form-control select2"},choices=is_monitored_choice)
     )
     handle_person = forms.CharField(
-        widget = Select(attrs = {"id":"handle_person","class":"form-control"})
+        widget = Select(attrs = {"id":"handle_person","class":"form-control select2"})
     )
     deploy_type = forms.CharField(
         widget = Select(attrs = {"id":"deploy_type","class":"form-control"},choices=deploy_type_choice)
     )
     email_person = forms.MultipleChoiceField(
-        widget = SelectMultiple(attrs = {"id":"email_person","class":"form-control"})
+        widget = SelectMultiple(attrs = {"id":"email_person","class":"form-control select2"})
+    )
+    upgrade_step = forms.CharField(
+        widget = Textarea(attrs = {"id":"upgrade_step","class":"form-control","placeholder":"请输入升级步骤"})
+    )
+    upgrade_partition = forms.CharField(
+        widget = Select(attrs = {"id":"is_upgrade_partition","class":"form-control"},choices=is_monitored_choice)
     )
     def __init__(self,*args,**kwargs):
         super(DeployForm,self).__init__(*args,**kwargs)
         project_choice = list(ProjectModule.objects.all().values_list("id","module_name"))
         project_choice.insert(0,("","请选择"))
-        user_choice = list(User.objects.all().values_list("username","username"))
-        principal_choice = list(User.objects.all().values_list("username","username"))
-        principal_choice.insert(0,("","请选择"))
-        instance_choices = list(Database.objects.all().values_list("id","instance"))
-        dbschema_choices = list(DbSchema.objects.all().values_list("id","schema"))
+        user_choice_queryset = User.objects.exclude(username="admin")
+        user_choice = [(u.username, u.last_name) for u in user_choice_queryset]
+        develop_group = Group.objects.get(name="develop")
+        develop_person_queryset = develop_group.user_set.all()
+        develop_person_choices = [(d.username,d.last_name) for d in develop_person_queryset]
+        develop_person_choices.insert(0,("","请选择"))
+        ops_group = Group.objects.get(name="ops")
+        ops_group_queryset = ops_group.user_set.all()
+        ops_group_choices = [(o.username,o.last_name) for o in ops_group_queryset]
+        ops_group_choices.insert(0,("","请选择"))
+        rdsinstance_choices = list(RdsInstance.objects.all().values_list("instance_name","instance_name"))
         self.fields["project"].widget.choices = project_choice
-        self.fields["principal"].widget.choices = principal_choice
-        self.fields["update_project"].widget.choices = project_choice
-        self.fields["develop_person"].choices = user_choice
-        self.fields["monitored_person"].choices = user_choice
-        self.fields["verify_person"].choices = user_choice
-        self.fields["instance"].choices = instance_choices
-        self.fields["dbschema"].choices = dbschema_choices
-        self.fields["handle_person"].widget.choices = principal_choice
+        self.fields["principal"].widget.choices = develop_person_choices
+        self.fields["develop_person"].choices = develop_person_choices
+        self.fields["monitored_person"].choices = ops_group_choices
+        self.fields["handle_person"].widget.choices = ops_group_choices
         self.fields["email_person"].choices = user_choice
+        self.fields["rdsinstance"].choices = rdsinstance_choices
 
 class UploadFileForm(forms.Form):
     sql_file_billing = forms.FileField(
@@ -217,3 +211,71 @@ class FileExecuteForm(forms.Form):
         self.fields["sql_billing_file"].widget.attrs["readonly"] = True
         self.fields["sql_pay_file"].widget.attrs["readonly"] = True
         self.fields["jar_file"].widget.attrs["readonly"] = True
+
+# class SchemaSelectForm(forms.Form):
+#     def __init__(self,*args,**kwargs):
+#         rdsinstance_list = kwargs.pop("rdsinstance_list",None)
+#         super(SchemaSelectForm,self).__init__(*args,**kwargs)
+#         for rdsinstance in rdsinstance_list:
+#             self.fields[rdsinstance] = forms.MultipleChoiceField(
+#                 label=rdsinstance,
+#                 widget = SelectMultiple(
+#                     attrs = {"id":rdsinstance,"class":"form-control select2"}
+#                 )
+#             )
+#             rdsschema_list = list(RdsSchema.objects.filter(rdsinstance__instance_name=rdsinstance).values_list("schema_name","schema_name"))
+#             self.fields[rdsinstance].choices = rdsschema_list
+
+# class SqlUploadForm(forms.Form):
+#     def __init__(self,*args,**kwargs):
+#         rdsschema = kwargs.pop("rdsschema",None)
+#         super(SqlUploadForm,self).__init__(*args,**kwargs)
+#         for rdsinstance,rdsschema_list in rdsschema.items():
+#             for schema in rdsschema_list:
+#                 self.fields[schema] = forms.FileField(
+#                     label = "{}_{}".format(rdsinstance,schema),
+#                     widget = FileInput(
+#                         attrs = {"id":schema,"class":"file","data-show-preview":"false","data-show-upload":"false"},
+#                     )
+#                 )
+
+class TestReportUploadForm(forms.Form):
+    test_report = forms.FileField(
+        widget = ClearableFileInput(attrs = {"id":"test_report","class":"file","data-show-preview":"false","data-show-upload":"false","multiple":True})
+    )
+    receiving_report = forms.FileField(
+        widget = ClearableFileInput(attrs = {"id":"receiving_report","class":"file","data-show-preview":"false","data-show-upload":"false","multiple":True}),
+        required=False
+    )
+
+class SchemaForm(forms.Form):
+    def __init__(self,*args,**kwargs):
+        rdsinstance = kwargs.pop("rdsinstance",None)
+        super(SchemaForm,self).__init__(*args,**kwargs)
+        self.fields[rdsinstance] = forms.MultipleChoiceField(
+            label = rdsinstance,
+            widget = SelectMultiple(
+                attrs = {"id":rdsinstance,"class":"form-control select2"}
+            )
+        )
+        rdsschema_list = list(RdsSchema.objects.filter(rdsinstance__instance_name=rdsinstance).values_list("schema_name","schema_name"))
+        self.fields[rdsinstance].choices = rdsschema_list
+
+class SqlExecuteSearchForm(forms.Form):
+    search_upload_person = forms.CharField(
+        widget = Select(attrs = {"id":"search_upload_person","class":"form-control select2"})
+    )
+    def __init__(self,*args,**kwargs):
+        super(SqlExecuteSearchForm,self).__init__(*args,**kwargs)
+        user = User.objects.all()
+        user_choices = [(u.username,u.first_name + u.last_name) for u in user]
+        user_choices.insert(0,("","请选择"))
+        self.fields["search_upload_person"].widget.choices = user_choices
+class SqlUploadForm(forms.Form):
+    sqlupload_rdsinstance = forms.MultipleChoiceField(
+        widget = SelectMultiple(attrs = {"id":"sqlupload_rdsinstance","class":"form-control select2"})
+    )
+    def __init__(self,*args,**kwargs):
+        super(SqlUploadForm,self).__init__(*args,**kwargs)
+        rdsinstance_choices = list(RdsInstance.objects.all().values_list("instance_name", "instance_name"))
+        self.fields["sqlupload_rdsinstance"].choices = rdsinstance_choices

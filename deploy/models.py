@@ -6,8 +6,6 @@ class DeployTask(models.Model):
     project = models.ForeignKey(ProjectModule,null=False,blank=False,verbose_name="项目名称",related_name="project_module_name")
     svn_path = models.CharField(max_length=255,null=False,blank=False,verbose_name="svn地址")
     principal = models.CharField(max_length=255,null=False,blank=False,verbose_name="负责人")
-    update_date = models.DateField(auto_now=False,auto_now_add=False,verbose_name="更新日期")
-    update_project = models.ForeignKey(ProjectModule,null=False,blank=False,verbose_name="更新项目",related_name="update_project")
     tag_date = models.DateField(auto_now=False,auto_now_add=False,verbose_name="tag日期")
     tag_version = models.CharField(max_length=255,null=False,blank=False,verbose_name="tag版本")
     desc = models.TextField(max_length=255,null=False,blank=False,verbose_name="版本简要说明")
@@ -26,7 +24,20 @@ class DeployTask(models.Model):
     handle_person = models.CharField(max_length=255,null=True,blank=False,verbose_name="升级操作人员")
     is_backspace = models.CharField(max_length=255,null=True,blank=False,default="no",verbose_name="是否被回退")
     deploy_type = models.CharField(max_length=255,null=True,blank=False,default="common upgrade",verbose_name="升级类型")
-    create_time = models.DateField(auto_now=True,verbose_name="工单创建时间")
+    create_time = models.DateTimeField(auto_now=True,verbose_name="工单创建时间")
+    upgrade_step = models.TextField(null=True,blank=True,verbose_name="升级步骤")
+    email_person = models.CharField(max_length=255,null=True,blank=True,verbose_name="需要接受邮件的人")
+    is_sql_exec = models.CharField(max_length=255,null=True,blank=True,default="no",verbose_name="是否需要执行sql")
+    upgrade_partition = models.CharField(max_length=255,null=True,blank=True,verbose_name="是否需要先升级部分节点")
+    is_upgrade = models.CharField(max_length=255,null=False,blank=False,default="no",verbose_name="是否已升级")
+    belong = models.ForeignKey(User,null=True,blank=True,verbose_name="所属用户")
+    is_upgrade_success = models.CharField(max_length=255,null=False,blank=False,default="no",verbose_name="是否升级成功")
+    is_upgrade_failure = models.CharField(max_length=255,null=False,blank=False,default="no",verbose_name="是否升级失败")
+    is_upgrade_partition = models.CharField(max_length=255,null=False,blank=False,default="no",verbose_name="是否升级部分节点")
+    is_upgrade_continue = models.CharField(max_length=255,null=False,blank=False,default="no",verbose_name="是否继续升级")
+    upgrade_time = models.CharField(max_length=255,null=True,blank=True,verbose_name="升级操作时间")
+    upgrade_success_time = models.CharField(max_length=255,null=True,blank=True,verbose_name="升级成功时间")
+    upgrade_failure_time = models.CharField(max_length=255,null=True,blank=True,verbose_name="升级失败时间")
 
     def __str__(self):
         return "{}-{}-{}".format(self.project,self.tag_version,self.tag_date)
@@ -36,7 +47,10 @@ class DeployTask(models.Model):
         permissions = (
             ("scan_deploytask","Can scan deploytask info"),
             ("examine_deploytask","Can examine deploytask"),
-            ("backspace_deploytask","Can backspace deploytask")
+            ("backspace_deploytask","Can backspace deploytask"),
+            ("upgrade_deploytask","Can upgrade 升级任务"),
+            ("upgrade_partition","Can upgrade partition 升级任务"),
+            ("upgrade_continue","Can upgrade continue 升级任务")
         )
 
 class Script(models.Model):
@@ -67,3 +81,22 @@ class UploadFile(models.Model):
     class Meta:
         verbose_name = "文件上传执行"
         verbose_name_plural = verbose_name
+        permissions = (
+            ("execute_file","Can execute file"),
+        )
+
+class SqlExecute(models.Model):
+    rdsinstance = models.CharField(max_length=255,null=True,blank=True,verbose_name="rds实例名称")
+    rdsschema = models.CharField(max_length=255,null=True,blank=True,verbose_name="rds数据库名称")
+    sqlfile = models.CharField(max_length=255,null=True,blank=True,verbose_name="sql文件名称")
+    upload_time = models.DateTimeField(auto_now_add=True)
+    upload_person = models.ForeignKey(User,null=True,blank=True,verbose_name="上传文件用户")
+    def __str__(self):
+        return self.sqlfile
+    class Meta:
+        verbose_name = "sql执行"
+        verbose_name_plural = verbose_name
+        permissions = (
+            ("scan_sql","Can scan SQL文件"),
+            ("upload_sql","Can upload SQL文件"),
+        )

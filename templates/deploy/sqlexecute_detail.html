@@ -1,0 +1,71 @@
+{% extends "common/base.html" %}
+{% load pagination_tags %}
+{% block content_title %}
+    SQL文件列表
+    <small>SQL文件列表</small>
+{% endblock %}
+{% block uri %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li class="active"><a href="{% url 'sql_file_list' %}">SQL文件管理</a></li>
+{% endblock %}
+{% block main_body %}
+    <style>
+    .select2-container--default .select2-selection--single {
+        height:34px;
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 0px;
+    }
+    </style>
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+                <div class="box-body">
+                    <table class="table1 table text-center flat" id="sqlfiletable">
+                        <thead>
+                            <tr>
+                                <th>RDS实例</th>
+                                <th>RDS数据库</th>
+                                <th>SQL文件</th>
+                                <th>上传用户</th>
+                                <th>上传时间</th>
+                                {% if request.user.is_superuser %}
+                                <th>
+                                    <div>操作</div>
+                                </th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% autopaginate sqlexecute 10 %}
+                            {% for sql in sqlexecute %}
+                                <tr>
+                                    <td>{{ sql.rdsinstance }}</td>
+                                    <td>{{ sql.rdsschema }}</td>
+                                    <td>{{ sql.sqlfile }}</td>
+                                    <td>{{ sql.upload_person.first_name }}{{ sql.upload_persson.last_name }}</td>
+                                    <td>{{ sql.upload_time|date:"Y-m-d H:i:s" }}</td>
+                                    {% if request.user.is_superuser %}
+                                    <td>
+                                        <a href="{% url 'sql_file_download' sql.id %}">
+                                            <button class="btn btn-success btn-sm" id="remote_execute">下 载</button>
+                                        </a>
+                                        <a href="{% url 'sql_file_delete' sql.id %}">
+                                            <button class="btn btn-danger btn-sm" id="upgrade_success">删 除</button>
+                                        </a>
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% paginate %}
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "common/form_base.html" %}
+{% block content_title %}
+    添加zabbix节点
+{% endblock %}
+{% block child_uri %}
+    <li><a href="" class="active">添加zabbix节点</a></li>
+{% endblock %}
+{% block add_form %}
+    <style>
+    .select2-container--default .select2-selection--single {
+        height:34px;
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 0px;
+    }
+    .select2-container--default .select2-selection--multiple {
+        heigth:34px;
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 0px;
+    }
+    </style>
+    <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="visible_name_label">主机描述名称</label>
+                    {{ zabbix_add_form.visible_name }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="hostname_label">主机名</label>
+                    {{ zabbix_add_form.hostname }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="ip_label">IP地址</label>
+                    {{ zabbix_add_form.ip }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="vpc_label">网络类型</label>
+                    {{ zabbix_add_form.vpc }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="templatename_label">模板</label>
+                    {{ zabbix_add_form.templatename }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="groupname_label">主机组</label>
+                    {{ zabbix_add_form.groupname }}
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-default"><a href="{% url 'ecshost_list' %}">取消</a></button>
+            <button class="btn btn-info" id="add" type="submit">确定</button>
+        </div>
+    </form>
+{% endblock %}

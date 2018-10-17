@@ -4,3 +4,9 @@ dj-pagination
 requests
 djangorestframework-jwt
 pymysql
+unrar
+redis
+jinja2
+python-jenkins
+django-celery
+celery

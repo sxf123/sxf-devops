@@ -32,7 +32,3 @@ def create_node(port,user,credentialsId,host,javaPath,name):
     except jenkins.JenkinsException as e:
         print(e)
         return 0
-
-def search_node():
-    server = get_server()
-    return server.get_nodes(0)

@@ -1,4 +1,5 @@
 {% extends "common/base.html" %}
+{% load split_res %}
 {% block content_title %}
     升级详细信息
     <small>升级详细信息</small>
@@ -36,10 +37,6 @@
                                     <td>负责人</td>
                                     <td>{{ deploytask.principal }}</td>
                                 </tr>
-                                <tr>
-                                    <td>升级日期</td>
-                                    <td>{{ deploytask.update_date }}</td>
-                                </tr>
                                 </tbody>
                                 <thead>
                                 <tr>
@@ -49,7 +46,7 @@
                                 <tbody>
                                 <tr>
                                     <td>Tag日期</td>
-                                    <td>{{ deploytask.tag_date }}</td>
+                                    <td>{{ deploytask.tag_date|date:"Y-m-d" }}</td>
                                 </tr>
                                 <tr>
                                     <td>Tag版本</td>
@@ -100,8 +97,42 @@
                                     <td colspan="3">{{ deploytask.need_test }}</td>
                                 </tr>
                                 <tr>
+                                    <td>是否需要升级部分节点</td>
+                                    <td colspan="3">{{ deploytask.upgrade_partition }}</td>
+                                </tr>
+                                <tr>
                                     <td>升级操作人员</td>
                                     <td colspan="3">{{ deploytask.handle_person }}</td>
+                                </tr>
+                                {% if zip_file %}
+                                <tr>
+                                    <td>附件SQL</td>
+                                    <td colspan="3"><a href="/deploy/task/download/sql/file/{{ deploytask.project.module_name }}/{{ deploytask.tag_version }}/">{{ zip_file }}</a></td>
+                                </tr>
+                                {% endif %}
+                                {% if test_report %}
+                                <tr>
+                                    <td>测试报告</td>
+                                    <td colspan="3">
+                                        {% for tr in test_report.test_report_file_list %}
+                                            <a href="{% url 'test_report_download' deploytask.project.module_name deploytask.tag_version tr %}">{{ tr }}</a><br/>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                {% if receiving_report %}
+                                <tr>
+                                    <td>验收报告</td>
+                                    <td colspan="3">
+                                        {% for rr in receiving_report.receiving_report_file_list %}
+                                            <a href="{% url 'receiving_report_download' deploytask.project.module_name deploytask.tag_version rr %}">{{ rr }}</a><br/>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                <tr>
+                                    <td>升级步骤</td>
+                                    <td>{% for step in deploytask.upgrade_step|split %}{{ step }}<br/>{% endfor %}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -109,7 +140,7 @@
                             {% ifequal deploytask.need_test "yes" %}
                                 {% ifequal deploytask.is_test_pass "no" %}
                                     {% ifequal deploytask.is_backspace "no" %}
-                                        <a class="btn btn-success" href="/deploy/task/test/pass/{{ deploytask.handle_person }}/{{ deploytask.project.module_name }}/{{ deploytask.tag_version }}/">测试通过</a>
+                                        <a class="btn btn-success" href="{% url 'test_pass' deploytask.project.module_name deploytask.tag_version %}">测试通过</a>
                                     {% endifequal %}
                                 {% endifequal %}
                             {% endifequal %}
@@ -125,6 +156,16 @@
                                     {% endifequal %}
                                 {% endifequal %}
                             {% endifequal %}
+                        {% endif %}
+                        {% if perms.deploy.upgrade_partition %}
+                            {% if deploytask.upgrade_partition == "yes" and deploytask.is_upgrade_partition == "no" %}
+                                <a class="btn btn-warning" href="{% url 'upgrade_partition' deploytask.project.module_name deploytask.tag_version %}">升级部分节点</a>
+                            {% endif %}
+                        {% endif %}
+                        {% if perms.deploy.upgrade_continue %}
+                            {% if deploytask.upgrade_partition == "yes" and deploytask.is_upgrade_partition == "yes" and deploytask.is_upgrade_continue == "no" %}
+                                <a class="btn btn-primary" href="{% url 'upgrade_continue' deploytask.project.module_name deploytask.tag_version %}">继续升级</a>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>

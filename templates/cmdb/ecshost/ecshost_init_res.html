@@ -1,0 +1,33 @@
+{% extends "common/base.html" %}
+{% block content_title %}
+    升级详细信息
+    <small>升级详细信息</small>
+{% endblock %}
+{% block uri %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li class="active"><a href="{% url 'ecshost_list' %}">ECS主机列表</a></li>
+{% endblock %}
+{% block main_body %}
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                {% for k,v in install_res.items %}
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ k }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% for host,result in v.return.0.items %}
+                            {% for key,value in result.items %}
+                                <p>
+                                    {{ key }}:{comment: {{ value.comment }},result: {{ value.result }}}
+                                </p>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

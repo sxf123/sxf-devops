@@ -13,6 +13,12 @@
         border: 1px solid #aaa;
         border-radius: 0px;
     }
+    .select2-container--default .select2-selection--multiple {
+        heigth:34px;
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 0px;
+    }
     </style>
     <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
         <div class="box-body">
@@ -34,26 +40,26 @@
                     {{ deploy_form.principal }}
                 </div>
             </div>
-            <div class="form-group">
-                <div class="col-xs-6">
-                    <label for="charge_name" id="update_date_label">更新日期<span style="color: #F00;;">(不能为空)</span></label>
-                    <div class="input-group date" id="datetimepicker1">
-                        {{ deploy_form.update_date }}
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                    {% ifequal date_error "True" %}
-                        <span style="color: #F00;;">更新日期必须为当前日期</span>
-                    {% endifequal %}
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-xs-6">
-                    <label for="charge_name" id="update_project_label">升级项目<span style="color: #F00;;">(不能为空)</span></label>
-                    {{ deploy_form.update_project }}
-                </div>
-            </div>
+{#            <div class="form-group">#}
+{#                <div class="col-xs-6">#}
+{#                    <label for="charge_name" id="update_date_label">更新日期<span style="color: #F00;;">(不能为空)</span></label>#}
+{#                    <div class="input-group date" id="datetimepicker1">#}
+{#                        {{ deploy_form.update_date }}#}
+{#                        <span class="input-group-addon">#}
+{#                            <span class="glyphicon glyphicon-calendar"></span>#}
+{#                        </span>#}
+{#                    </div>#}
+{#                    {% ifequal date_error "True" %}#}
+{#                        <span style="color: #F00;;">更新日期必须为当前日期</span>#}
+{#                    {% endifequal %}#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="form-group">#}
+{#                <div class="col-xs-6">#}
+{#                    <label for="charge_name" id="update_project_label">升级项目<span style="color: #F00;;">(不能为空)</span></label>#}
+{#                    {{ deploy_form.update_project }}#}
+{#                </div>#}
+{#            </div>#}
             <div class="form-group">
                 <div class="col-xs-6">
                     <label for="charge_name" id="tag_date_label">tag日期<span style="color: #F00;;">(不能为空)</span></label>
@@ -63,9 +69,9 @@
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
-                    {% ifequal date_error "True"  %}
-                        <span style="color: #F00;;">tag日期必须为当前日期</span>
-                    {% endifequal %}
+{#                    {% ifequal date_error "True"  %}#}
+{#                        <span style="color: #F00;;">tag日期必须为当前日期</span>#}
+{#                    {% endifequal %}#}
                 </div>
             </div>
             <div class="form-group">
@@ -116,16 +122,10 @@
                     {{ deploy_form.is_monitored }}
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="rdsinstance_form">
                 <div class="col-xs-6">
-                    <label for="charge_name" id="instance_label">数据库实例<span style="color: #F00">(不能为空)</span></label>
-                    {{ deploy_form.instance }}
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-xs-6">
-                    <label id="dbschema_label">数据库schema<span style="color: #F00;;">(不能为空)</span></label>
-                    {{ deploy_form.dbschema }}
+                    <label id="rdsinstance_label">数据库实例</label>
+                    {{ deploy_form.rdsinstance }}
                 </div>
             </div>
             <div class="form-group">
@@ -140,19 +140,13 @@
                     {{ deploy_form.monitored_person }}
                 </div>
             </div>
-            <div class="form-group">
-                <div class="col-xs-6">
-                    <label for="charge_name" id="verify_person_label">升级后功能验证人员<span style="color: #F00;;">(不能为空)</span></label>
-                    {{ deploy_form.verify_person }}
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-xs-6">
-                    <label id="sql_exec_label">需要执行的sql<span style="color: #F00">(不能为空)</span></label>
-                    {{ deploy_form.sql_exec }}
-                </div>
-            </div>
-            <div class="form-group">
+{#            <div class="form-group">#}
+{#                <div class="col-xs-6">#}
+{#                    <label for="charge_name" id="verify_person_label">升级后功能验证人员<span style="color: #F00;;">(不能为空)</span></label>#}
+{#                    {{ deploy_form.verify_person }}#}
+{#                </div>#}
+{#            </div>#}
+            <div class="form-group" id="need_test_form">
                 <div class="col-xs-6">
                     <label id="need_test_label">是否需要测试验证<span style="color: #F00">(不能为空)</span></label>
                     {{ deploy_form.need_test }}
@@ -172,16 +166,31 @@
             </div>
             <div class="form-group">
                 <div class="col-xs-6">
+                    <label id="is_upgrade_partition_label">是否需要升级部分节点<span style="color: #F00;">(不能为空)</span></label>
+                    {{ deploy_form.upgrade_partition }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
                     <label id="email_person_label">接受邮件的人<span style="color: #F00;;">(不能为空)</span></label>
                     {{ deploy_form.email_person }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="upgrade_step_label">升级步骤<span style="color: #F00;;">(不能为空)</span></label>
+                    {{ deploy_form.upgrade_step }}
                 </div>
             </div>
         </div>
         <div class="box-footer">
             <button class="btn btn-default"><a href="{% url 'deploy_task_list' %}">取消</a></button>
             <button class="btn btn-info" id="add" type="submit">确定</button>
-            {% ifequal too_many_upgrade "True"  %}
-                <span style="color: #F00;;">一天内更新次数超过三次，不能更新</span>
+{#            {% ifequal too_many_upgrade "True"  %}#}
+{#                <span style="color: #F00;;">一天内更新次数超过三次，不能更新</span>#}
+{#            {% endifequal %}#}
+            {% ifequal upgrade_ticket_repeat "True" %}
+                <span style="color: #F00;;">该版本工单已提交，不能重复提交</span>
             {% endifequal %}
         </div>
     </form>

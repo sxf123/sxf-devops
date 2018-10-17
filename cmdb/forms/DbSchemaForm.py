@@ -27,10 +27,12 @@ class DbSchemaAddForm(forms.Form):
         widget = TextInput(attrs={"id":"port","class":"form-control","placeholder":"请输入端口"})
     )
     user = forms.CharField(
-        widget = TextInput(attrs={"id":"user","class":"form-control","placeholder":"请输入用户名"})
+        widget = TextInput(attrs={"id":"user","class":"form-control","placeholder":"请输入用户名"}),
+        required=False
     )
     password = forms.CharField(
-        widget = TextInput(attrs={"id":"password","class":"form-control","placeholder":"请输入密码"})
+        widget = TextInput(attrs={"id":"password","class":"form-control","placeholder":"请输入密码"}),
+        required=False
     )
     instance = forms.CharField(
         widget = Select(attrs={"id":"instance","class":"form-control"})

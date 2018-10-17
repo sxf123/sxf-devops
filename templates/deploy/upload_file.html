@@ -36,6 +36,9 @@
         <div class="box-footer">
             <button class="btn btn-default"><a href="{% url 'execute_file_list' %}">取消</a></button>
             <button class="btn btn-info" id="upload_file" type="submit">确定</button>
+{#            {% ifequal file_error "True" %}#}
+{#                <span style="color: #F00;;">文件格式错误，billing和pay必须为.zip压缩包，jar文件必须为.jar文件</span>#}
+{#            {% endifequal %}#}
         </div>
     </form>
 {% endblock %}

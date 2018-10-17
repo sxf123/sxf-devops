@@ -70,7 +70,7 @@
                             <a href="/cmdb/domainname/update/{{ d.id }}/">
                                 <button class="btn btn-warning btn-sm edit_btn" data-toggle="modal" data-target="#edit_project">修 改</button>
                             </a>
-                            {% if request.user.is_superuser %}
+                            {% if perms.cmdb.delete_domainname %}
                             <a href="/cmdb/domainname/delete/{{ d.id }}/">
                                 <button class="btn btn-danger btn-sm del_btn" data-toggle="modal" data-target="#del_project">删 除</button>
                             </a>

@@ -17,8 +17,10 @@ class JenkinsSearchNode(View):
         node_list = get_node()
         self.context = {"jenkins_search_form":jenkins_search_form,"node_list":node_list}
         return render(request,"jenkins/node/node_list.html",self.context)
+    @method_decorator(login_required)
     def post(self,request,*args,**kwargs):
         pass
+
 
 
 class JekinsAddNode(View):

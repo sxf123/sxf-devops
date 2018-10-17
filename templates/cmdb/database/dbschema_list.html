@@ -63,9 +63,11 @@
                             <a href="/cmdb/dbschema/update/{{ d.id }}/">
                                 <button class="btn btn-warning btn-sm edit_btn" data-toggle="modal" data-target="#edit_project">修 改</button>
                             </a>
+                            {% if perms.cmdb.delete_dbschema %}
                             <a href="">
                                 <button class="btn btn-danger btn-sm del_btn" data-toggle="modal" data-target="#del_project">删 除</button>
                             </a>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}

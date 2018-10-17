@@ -28,7 +28,9 @@
               </div>
               <div class="col-xs-3 no-padding">
                   <button class="btn btn-info flat" id="search_wf"><i class="fa fa-search"> </i> 搜索</button>
+                  {% if perms.deploy.add_deploytask %}
                   <button class="btn btn-info flat" data-toggle="modal" data-target="#edit_project"><a href="{% url 'deploy_task' %}" style="color: #fff;"><i class="fa fa-plus"> </i>新增升级</a></button>
+                  {% endif %}
               </div>
             </form>
             <div class="box-body">
@@ -42,6 +44,9 @@
                       <th>是否需要测试</th>
                       <th>是否测试通过</th>
                       <th>是否被回退</th>
+                      <th>是否已升级</th>
+                      <th>是否升级成功</th>
+                      <th>是否升级失败</th>
                       <th>
                         <div>操作</div>
                       </th>
@@ -54,20 +59,45 @@
                         <td>{{ d.project.module_name }}</td>
                         <td>{{ d.tag_version }}</td>
                         <td>{{ d.principal }}</td>
-                        <td>{{ d.update_date }}</td>
+                        <td>{{ d.create_time|date:"Y-m-d" }}</td>
                         <td>{{ d.need_test }}</td>
                         <td>{{ d.is_test_pass }}</td>
                         <td>{{ d.is_backspace }}</td>
+                        <td>{{ d.is_upgrade }}</td>
+                        <td>{{ d.is_upgrade_success }}</td>
+                        <td>{{ d.is_upgrade_failure }}</td>
                         <td>
                             <a href="/deploy/task/examine/{{ d.id }}/">
                                 <button class="btn btn-success btn-sm" id="remote_execute">审 核</button>
                             </a>
-                            <a href="">
-                                <button class="btn btn-warning btn-sm edit_btn" data-toggle="modal" data-target="#edit_project">修 改</button>
+                            <a href="/deploy/task/upgrade/success/{{ d.id }}/">
+                                {% if d.is_upgrade_success == "yes" or d.is_upgrade == "no" or d.is_upgrade_failure == "yes" %}
+                                    <button class="btn btn-primary btn-sm" id="upgrade_success" disabled="true">升级成功</button>
+                                {% else %}
+                                    <button class="btn btn-primary btn-sm" id="upgrade_success">升级成功</button>
+                                {% endif %}
                             </a>
+                            <a href="/deploy/task/upgrade/failure/{{ d.id }}/">
+                                {% if d.is_upgrade_failure == "yes" or d.is_upgrade_success == "yes" or d.is_upgrade == "no" and d.is_upgrade_partition == "no" or d.is_upgrade == "no" and d.is_upgrade_continue == "yes"%}
+                                    <button class="btn btn-danger btn-sm" id="upgrade_failure" disabled="true">升级失败</button>
+                                {% else %}
+                                    <button class="btn btn-danger btn-sm" id="upgrade_failure">升级失败</button>
+                                {% endif %}
+                            </a>
+                            {% if perms.deploy.upgrade_deploytask %}
+                            <a href="/deploy/task/upgrade/{{ d.id }}/">
+                                {% if d.is_upgrade == "yes" or d.is_upgrade_failure == "yes" %}
+                                    <button class="btn btn-warning btn-sm edit_btn" data-toggle="modal" data-target="#edit_project" disabled="true">升 级</button>
+                                {% else %}
+                                    <button class="btn btn-warning btn-sm edit_btn" data-toggle="modal" data-target="#edit_project">升 级</button>
+                                {% endif %}
+                            </a>
+                            {% endif %}
+                            {% if perms.deploy.delete_deploytask %}
                             <a href="/deploy/task/delete/{{ d.id }}/">
                                 <button class="btn btn-danger btn-sm del_btn" data-toggle="modal" data-target="#del_project">删 除</button>
                             </a>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}

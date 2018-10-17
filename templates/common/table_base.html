@@ -1,7 +1,7 @@
 {% extends "common/base.html" %}
 {% load pagination_tags %}
 {% block uri %}
-    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> 控制台</a></li>
     {% block child_uri %}{% endblock %}
 {% endblock %}
 {% block main_body %}

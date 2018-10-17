@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 {% load static %}
+{% load split_res %}
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>大象集团 | 运维平台</title>
+  <title>哲信IT | 运维平台</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="{% static 'plugin/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static 'plugin/css/font-awesome.min.css' %}">
@@ -64,7 +65,18 @@
     <section class="sidebar">
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-        {% if request.user.is_superuser %}
+        {% if perms.cmdb.resource_manage %}
+        {% with request.path|split_path as path %}
+        {% ifequal path.1 "cmdb" %}
+        <li class="treeview menu-open">
+          <a href="#">
+            <i class="fa fa-cogs"></i> <span>资源管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" style="display: block;">
+        {% else %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-cogs"></i> <span>资源管理</span>
@@ -73,19 +85,53 @@
             </span>
           </a>
           <ul class="treeview-menu">
-              <li class="active"><a href="{% url 'host' %}"><i class="fa fa-desktop"></i>主机管理</a></li>
-              <li class="active"><a href="{% url 'middleware' %}"><i class="fa fa-cog"></i>中间件管理</a></li>
-              <li class="active"><a href="{% url 'cluster' %}"><i class="fa fa-sitemap"></i>集群管理</a></li>
-              <li class="active"><a href="{% url 'ippool' %}"><i class="fa fa-wifi"></i>IP资源管理</a></li>
-              <li class="active"><a href="{% url 'domainname' %}"><i class="fa fa-signal"></i>DNS域名管理</a></li>
-              <li class="active"><a href="{% url 'database' %}"><i class="fa fa-server"></i>数据库实例管理</a></li>
-              <li class="active"><a href="{% url 'dbschema' %}"><i class="fa fa-database"></i>数据库管理</a></li>
-              <li class="active"><a href="{% url 'jenkins_search_node' %}"><i class="fa fa-desktop"></i>Jenkins节点</a></li>
-              <li class="active"><a href="{% url 'script_manage' %}"><i class="fa fa-file-text"></i>脚本管理</a></li>
+        {% endifequal %}
+{#              {% if perms.cmdb.scan_host %}#}
+{#                  <li class="active"><a href="{% url 'host' %}"><i class="fa fa-desktop"></i>主机管理</a></li>#}
+{#              {% endif %}#}
+{#              {% if perms.cmdb.scan_middleware %}#}
+{#              <li class="active"><a href="{% url 'middleware' %}"><i class="fa fa-cog"></i>中间件管理</a></li>#}
+{#              {% endif %}#}
+{#              {% if perms.cmdb.scan_cluster %}#}
+{#              <li class="active"><a href="{% url 'cluster' %}"><i class="fa fa-sitemap"></i>集群管理</a></li>#}
+{#              {% endif %}#}
+{#              {% if perms.cmdb.scan_ippool %}#}
+{#              <li class="active"><a href="{% url 'ippool' %}"><i class="fa fa-wifi"></i>IP资源管理</a></li>#}
+{#              {% endif %}#}
+{#              {% if perms.cmdb.scan_domainname %}#}
+{#              <li class="active"><a href="{% url 'domainname' %}"><i class="fa fa-signal"></i>DNS域名管理</a></li>#}
+{#              {% endif %}#}
+{#              {% if perms.cmdb.scan_dbschema %}#}
+{#              <li class="active"><a href="{% url 'database' %}"><i class="fa fa-server"></i>数据库实例管理</a></li>#}
+{#              {% endif %}#}
+{#              {% if perms.cmdb.scan_database %}#}
+{#              <li class="active"><a href="{% url 'dbschema' %}"><i class="fa fa-database"></i>数据库管理</a></li>#}
+{#              {% endif %}#}
+              {% if perms.cmdb.scan_rdsinstance %}
+              <li class="active"><a href="{% url 'rdsinstance_list' %}"><i class="fa fa-first-order"></i>RDS实例管理</a></li>
+              {% endif %}
+              {% if perms.cmdb.scan_rdsschema %}
+              <li class="active"><a href="{% url 'rdsschema_list' %}"><i class="fa fa-database"></i>RDS数据库管理</a></li>
+              {% endif %}
+              {% if perms.cmdb.scan_ecshost %}
+              <li class="active"><a href="{% url 'ecshost_list' %}"><i class="fa fa-server"></i>ECS主机管理</a></li>
+              {% endif %}
           </ul>
         </li>
+        {% endwith %}
         {% endif %}
-        {% if request.user.is_superuser %}
+        {% with request.path|split_path as path %}
+        {% if perms.cmdb.project_manage %}
+        {% ifequal path.1 "project" %}
+        <li class="treeview menu-open">
+          <a href="#">
+            <i class="fa fa-list"></i> <span>业务管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" style="display: block;">
+        {% else %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-list"></i> <span>业务管理</span>
@@ -94,32 +140,46 @@
             </span>
           </a>
           <ul class="treeview-menu">
+        {% endifequal %}
               {% if perms.cmdb.scan_project %}
               <li class="active"><a href="{% url 'project' %}"><i class="fa fa-git"></i>项目管理</a></li>
               {% endif %}
               {% if perms.cmdb.scan_projectmodule %}
               <li class="active"><a href="{% url 'projectmodule' %}"><i class="fa fa-gitlab"></i>模块管理</a></li>
               {% endif %}
-              {% if perms.deploy.scan_deploytask %}
-              <li class="active"><a href="{% url 'deploy_task_list' %}"><i class="fa fa-refresh"></i>升级管理</a></li>
+              {% if perms.cmdb.scan_process %}
+              <li class="active"><a href="{% url 'process_list' %}"><i class="fa fa-cloud"></i>进程管理</a></li>
               {% endif %}
           </ul>
         </li>
         {% endif %}
-        {% if request.user.is_superuser %}
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-table"></i> <span>项目脚手架</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-              <li class="active"><a href="#"><i class="fa fa-circle-o"></i>前端项目</a></li>
-              <li class="active"><a href="{% url 'mavenproj' %}"><i class="fa fa-circle-o"></i>后端项目</a></li>
-          </ul>
-        </li>
-        {% endif %}
+        {% endwith %}
+{#        {% if request.user.is_superuser %}#}
+{#        <li class="treeview">#}
+{#          <a href="#">#}
+{#            <i class="fa fa-table"></i> <span>项目脚手架</span>#}
+{#            <span class="pull-right-container">#}
+{#              <i class="fa fa-angle-left pull-right"></i>#}
+{#            </span>#}
+{#          </a>#}
+{#          <ul class="treeview-menu">#}
+{#              <li class="active"><a href="#"><i class="fa fa-circle-o"></i>前端项目</a></li>#}
+{#              <li class="active"><a href="{% url 'mavenproj' %}"><i class="fa fa-circle-o"></i>后端项目</a></li>#}
+{#          </ul>#}
+{#        </li>#}
+{#        {% endif %}#}
+        {% if perms.cmdb.project_upgrade %}
+        {% with request.path|split_path as path %}
+        {% ifequal path.1 "deploy" %}
+        <li class="treeview menu-open">
+            <a href="#">
+                <i class="fa fa-refresh"></i> <span>项目升级</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu" style="display: block;">
+        {% else %}
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-refresh"></i> <span>项目升级</span>
@@ -128,12 +188,44 @@
                 </span>
             </a>
             <ul class="treeview-menu">
+        {% endifequal %}
+                {% if perms.deploy.add_deploytask %}
                 <li class="active"><a href="{% url 'deploy_task' %}"><i class="fa fa-refresh"></i>项目升级</a></li>
+                {% endif %}
+                {% if perms.deploy.add_uploadfile %}
                 <li class="active"><a href="{% url 'upload_file' %}"><i class="fa fa-file-text-o"></i>文件上传</a></li>
+                {% endif %}
+                {% if perms.deploy.execute_file %}
                 <li class="active"><a href="{% url 'execute_file_list' %}"><i class="fa fa-file-text"></i>文件执行</a></li>
+                {% endif %}
+                {% if perms.deploy.scan_script %}
+                <li class="active"><a href="{% url 'script_manage' %}"><i class="fa fa-file-text"></i>脚本管理</a></li>
+                {% endif %}
+                {% if perms.deploy.scan_deploytask %}
+                <li class="active"><a href="{% url 'deploy_task_list' %}"><i class="fa fa-refresh"></i>升级管理</a></li>
+                {% endif %}
+                {% if perms.deploy.upload_sql %}
+                <li class="active"><a href="{% url 'sql_upload' %}"><i class="fa fa-file-text"></i>SQL脚本上传</a></li>
+                {% endif %}
+                {% if perms.deploy.scan_sql %}
+                <li class="active"><a href="{% url 'sql_file_list' %}"><i class="fa fa-file-text-o"></i>SQL文件管理</a></li>
+                {% endif %}
             </ul>
         </li>
-          {% if request.user.is_superuser %}
+        {% endwith %}
+        {% endif %}
+        {% if request.user.is_superuser %}
+        {% with request.path|split_path as path %}
+        {% ifequal path.1 "account" %}
+        <li class="treeview menu-open">
+          <a href="#">
+            <i class="fa fa-address-book"></i> <span>用户管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" style="display: block;">
+        {% else %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-address-book"></i> <span>用户管理</span>
@@ -141,14 +233,53 @@
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-
           <ul class="treeview-menu">
+        {% endifequal %}
               <li class="active"><a href="{% url 'user_list' %}"><i class="fa fa-user-circle"></i>用户管理</a></li>
               <li class="active"><a href="{% url 'group_list' %}"><i class="fa fa-group"></i>用户组管理</a></li>
           </ul>
-
         </li>
-          {% endif %}
+        {% endwith %}
+        {% endif %}
+{#        {% if request.user.is_superuser %}#}
+{#            <li class="treeview">#}
+{#                <a href="#">#}
+{#                    <i class="fa fa-amazon"></i> <span>Jenkins管理</span>#}
+{#                    <span class="pull-right-container">#}
+{#                        <i class="fa fa-angle-left pull-right"></i>#}
+{#                    </span>#}
+{#                </a>#}
+{#                <ul class="treeview-menu">#}
+{#                    <li class="active"><a href="{% url 'jenkins_search_node' %}"><i class="fa fa-desktop"></i>Jenkins节点</a></li>#}
+{#                </ul>#}
+{#            </li>#}
+{#        {% endif %}#}
+        {% if perms.cmdb.add_ldap %}
+        {% with request.path|split_path as path %}
+        {% ifequal path.1 "ldap" %}
+        <li class="treeview menu-open">
+            <a href="#">
+                <i class="fa fa-user"></i> <span>LDAP管理</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu" style="display: block">
+        {% else %}
+        <li class="treeview">
+            <a href="#">
+                <i class="fa fa-user"></i> <span>LDAP管理</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+            {% endifequal %}
+                <li class="active"><a href="{% url 'ldap_add' %}"><i class="fa fa-user-plus"></i>LDAP用户添加</a></li>
+            </ul>
+        </li>
+        {% endwith %}
+        {% endif %}
       </ul>
     </section>
   </aside>
@@ -185,11 +316,12 @@
 <script src="{% static 'plugin/js/select2.js' %}"></script>
 <script src="{% static 'plugin/js/fileinput.js' %}"></script>
 <script src="{% static 'plugin/js/fileinput.min.js' %}"></script>
-<script src="{% static 'plugin/js/ajax_post/validate.js' %}"></script>
-{#<script src="{% static 'plugin/js/ajax_post/script_execute.js' %}"></script>#}
+<script src="{% static 'plugin/js/ajax_post/script_execute.js' %}"></script>
 <script>
     $(".select2").select2();
 </script>
+<script src="{% static 'plugin/js/ajax_post/schema_select.js' %}"></script>
+<script src="{% static 'plugin/js/ajax_post/sqlupload_schema_select.js' %}"></script>
 <script>
     $(function(){
         $("#datetimepicker1").datetimepicker({
@@ -210,7 +342,12 @@
             $("#upload_file").hide();
         }
     });
+    $("#execute_file").on("click",function () {
+        $("#execute_file").hide();
+    })
 </script>
 <script src="{% static 'plugin/js/ajax_post/middleware_install.js' %}"></script>
+<script src="{% static 'plugin/js/ajax_post/execute_file.js' %}"></script>
+<script src="{% static 'plugin/js/ajax_post/table_checkbox.js' %}"></script>
 </body>
 </html>

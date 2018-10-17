@@ -1,0 +1,70 @@
+{% extends "common/form_base.html" %}
+{% block content_title %}
+    编辑进程
+    <small>新增进程</small>
+{% endblock %}
+{% block child_uri %}
+    <li><a href="{% url 'cluster' %}">进程管理</a></li>
+    <li><a href="" class="active">新增进程</a></li>
+{% endblock %}
+{% block add_form %}
+    <style>
+    .select2-container--default .select2-selection--single {
+        height:34px;
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 0px;
+    }
+    </style>
+    <form action="" method="post" class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="process_name_label">进程名称</label>
+                    {{ process_add_form.process_name }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="process_homepath_label">进程HOME目录</label>
+                    {{ process_add_form.process_homepath }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="process_id_label">进程ID</label>
+                    {{ process_add_form.process_id }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="process_port_label">进程端口</label>
+                    {{ process_add_form.process_port }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="process_log_label">进程启动日志</label>
+                    {{ process_add_form.process_log }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="projectmodule_label">所属模块</label>
+                    {{ process_add_form.projectmodule }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label id="ecshost_label">ECS主机</label>
+                    {{ process_add_form.ecshost }}
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button class="btn btn-default"><a href="{% url 'process_list' %}">取消</a></button>
+            <button class="btn btn-info" id="add" type="submit">确定</button>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "common/form_base.html" %}
+{% block content_title %}
+    新增LDAP用户
+    <small>新增LDAP用户</small>
+{% endblock %}
+{% block child_uri %}
+    <li><a href="{% url 'cluster' %}">LDAP用户管理</a></li>
+    <li><a href="" class="active">新增LDAP用户管理</a></li>
+{% endblock %}
+{% block add_form %}
+    <style>
+    .select2-container--default .select2-selection--single {
+        height:34px;
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 0px;
+    }
+    </style>
+    <form action="" method="post" class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name">员工工号</label>
+                    {{ ldap_add_form.job_number }}
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name">姓名</label>
+                    {{ ldap_add_form.name }}
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name">姓名全拼</label>
+                    {{ ldap_add_form.username }}
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name">邮箱地址</label>
+                    {{ ldap_add_form.email }}
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name">OU</label>
+                    {{ ldap_add_form.ou }}
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name">组织一级部门</label>
+                    {{ ldap_add_form.first_department }}
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <label for="pro_name">组织二级部门</label>
+                    {{ ldap_add_form.second_department }}
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-default"><a href="{% url 'index' %}">取消</a></button>
+            <button class="btn btn-info" id="add" type="submit">确定</button>
+        </div>
+    </form>
+{% endblock %}

@@ -5,37 +5,49 @@
 {% endblock %}
 {% block uri %}
     <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
-    <li class="active"><a href="{% url 'deploy_task_list' %}">升级管理</a></li>
+    <li class="active"><a href="{% url 'execute_file_list' %}">上传文件列表</a></li>
     <li class="active"><a href="#">升级详细信息</a></li>
 {% endblock %}
 {% block main_body %}
     <section class="content">
         <div class="row">
             <div class="col-xs-12">
+                {% if billing_run_res %}
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">billing sql执行结果</h3>
                     </div>
                     <div class="panel-body">
-                        {{ billing_run_res }}
+                        {% for brr in billing_run_res %}
+                            <p>{{ brr }}</p>
+                        {% endfor %}
                     </div>
                 </div>
+                {% endif %}
+                {% if pay_run_res %}
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">pay sql执行结果</h3>
                     </div>
                     <div class="panel-body">
-                        {{ pay_run_res }}
+                        {% for prr in pay_run_res %}
+                            <p>{{ prr }}</p>
+                        {% endfor %}
                     </div>
                 </div>
+                {% endif %}
+                {% if jar_run_res %}
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">jar包上传结果</h3>
                     </div>
                     <div class="panel-body">
-                        {{ jar_run_res }}
+                        {% for jrr in jar_run_res %}
+                            <p>{{ jrr }}</p>
+                        {% endfor %}
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
     </section>

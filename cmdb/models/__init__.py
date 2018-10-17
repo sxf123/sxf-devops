@@ -6,3 +6,8 @@ from .Project import Project
 from .ProjectModule import ProjectModule
 from .DomainName import DomainName
 from .DbSchema import DbSchema
+from .RdsInstance import RdsInstance
+from .RdsSchema import RdsSchema
+from .EcsHost import EcsHost
+from .SaltState import SaltState
+from .Process import Process

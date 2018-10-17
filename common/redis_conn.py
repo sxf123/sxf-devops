@@ -12,3 +12,7 @@ class RedisConn(object):
     def get_key(self,key):
         s = self.redis_conn.get(key).decode("utf-8")
         return json.loads(s)
+    def get_key_no_json(self,key):
+        return self.redis_conn.get(key)
+    def del_key(self,key):
+        return self.redis_conn.delete(key)

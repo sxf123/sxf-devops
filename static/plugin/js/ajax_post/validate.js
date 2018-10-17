@@ -3,7 +3,7 @@ $(document).ready(function(){
         $("#project_label").html('<label for="pro_name" id="project_label">项目名称</label>');
     })
     $("#project").blur(function () {
-       if($("#select2-project-container").val() == ""){
+       if($("#project").val() == ""){
            $("#project_label").html('<label for="pro_name" id="project_label">项目名称<span style="color: #F00;;">(不能为空)</span></label>');
        }else{
            $("#project_label").html('<label for="pro_name" id="project_label">项目名称</label>');
@@ -129,16 +129,16 @@ $(document).ready(function(){
             $("#is_monitored_label").html('<label for="pro_name" id="is_monitored_label">新上线功能是否可监控</label>');
         }
     });
-    $("#instance").focus(function () {
-       $("#instance_label").html('<label id="instance_label">数据库实例</label>');
-    });
-    $("#instance").blur(function () {
-        if($("#instance").val() == ""){
-            $("#instance_label").html('<label id="instance_label">数据库实例<span style="color: #F00;;">(不能为空)</span></label>');
-        }else{
-            $("#instance_label").html('<label id="instance_label">数据库实例</label>')
-        }
-    })
+    // $("#rdsinstance").focus(function () {
+    //    $("#rdsinstance_label").html('<label id="rdsinstance_label">数据库实例</label>');
+    // });
+    // $("#rdsinstance").blur(function () {
+    //     if($("#rdsinstance").val() == ""){
+    //         $("#rdsinstance_label").html('<label id="rdsinstance_label">数据库实例<span style="color: #F00;;">(不能为空)</span></label>');
+    //     }else{
+    //         $("#rdsinstance_label").html('<label id="rdsinstance_label">数据库实例</label>')
+    //     }
+    // })
      $("#develop_person").focus(function () {
        $("#develop_person_label").html('<label for="pro_name" id="develop_person_label">版本开发人员</label>')
     });
@@ -189,16 +189,16 @@ $(document).ready(function(){
             $("#is_tested_label").html('<label id="is_tested_label">是否需要测试验证</label>');
         }
     });
-    $("#dbschema").focus(function () {
-        $("#dbschema_label").html('<label id="dbschema_label">数据库schema</label>');
-    });
-    $("#dbschema").blur(function () {
-        if($("#dbschema").val() == ""){
-            $("#dbschema_label").html('<label id="dbschema_label">数据库schema<span style="color: #F00">(不能为空)</span></label>');
-        }else{
-            $("#dbschema_label").html('<label id="dbschema_label">数据库schema</label>');
-        }
-    });
+    // $("#rdsschema").focus(function () {
+    //     $("#rdsschema_label").html('<label id="rdsschema_label">数据库schema</label>');
+    // });
+    // $("#rdsschema").blur(function () {
+    //     if($("#rdsschema").val() == ""){
+    //         $("#rdsschema_label").html('<label id="rdsschema_label">数据库schema<span style="color: #F00">(不能为空)</span></label>');
+    //     }else{
+    //         $("#rdsschema_label").html('<label id="rdsschema_label">数据库schema</label>');
+    //     }
+    // });
     $("#solve_problem").focus(function () {
         $("#solve_problem_label").html('<label id="solve_problem_label">已解决的问题</label>');
     });
@@ -259,4 +259,14 @@ $(document).ready(function(){
            $("#upload_desc_label").html('<label id="upload_desc_label">项目上线详细信息</label>');
        }
     });
+    $("#upgrade_step").focus(function () {
+        $("#upgrade_step_label").html('<label id="upgrade_step_label">升级步骤</label>');
+    })
+    $("#upgrade_step").blur(function () {
+        if($("#upgrade_step").val() == "") {
+            $("#upgrade_step_label").html('<label id="upgrade_step_label">升级步骤<span style="color: #F00;;">(不能为空)</span></label>');
+        }else {
+            $("#upgrade_step_label").html('<label id="upgrade_step_label">升级步骤</label>')
+        }
+    })
 });

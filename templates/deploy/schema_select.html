@@ -1,0 +1,33 @@
+{% extends "common/form_base.html" %}
+{% block content_title %}
+    选择数据库
+{% endblock %}
+{% block child_uri %}
+    <li><a href="" class="active">选择数据库</a></li>
+{% endblock %}
+{% block add_form %}
+    <style>
+    .select2-container--default .select2-selection--single {
+        height:34px;
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 0px;
+    }
+    </style>
+    <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+        <div class="box-body">
+            {% for fields in schema_select_form %}
+            <div class="form-group">
+                <div class="col-xs-6">
+                    {{ fields.label_tag }}
+                    {{ fields }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-default"><a href="{% url 'deploy_task_list' %}">取消</a></button>
+            <button class="btn btn-info" id="add" type="submit">确定</button>
+        </div>
+    </form>
+{% endblock %}

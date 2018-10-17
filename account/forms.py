@@ -29,7 +29,8 @@ class UserAddForm(forms.Form):
         widget = TextInput(attrs = {"id":"username","class":"form-control","placeholder":"请输入用户名"})
     )
     password = forms.CharField(
-        widget = PasswordInput(attrs = {"id":"password","class":"form-control","placeholder":"请输入密码"})
+        widget = PasswordInput(attrs = {"id":"password","class":"form-control","placeholder":"请输入密码"}),
+        required = False
     )
     first_name = forms.CharField(
         widget = TextInput(attrs = {"id":"first_name","class":"form-control","placeholder":"请输入姓"})

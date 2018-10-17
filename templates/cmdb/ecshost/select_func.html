@@ -1,0 +1,46 @@
+{% extends "common/base.html" %}
+{% load pagination_tags %}
+{% block content_title %}
+    ECS初始化功能选择列表
+    <small>ECS初始化功能选择列表</small>
+{% endblock %}
+{% block uri %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> 控制台</a></li>
+    <li class="active"><a href="{% url 'ecshost_list' %}">ECS主机管理</a></li>
+    <li class="active"><a href="#" id="minion_id">{{ minion_id }}</a></li>
+{% endblock %}
+{% block main_body %}
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+              <div class="box-header">
+              </div>
+              <div class="box-body">
+                  <table class="table1 table text-center flat" id="func_table">
+                      <thead>
+                        <tr>
+                            <th>函数名</th>
+                            <th>功能描述</th>
+                            <th>state目录</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for func in func_list %}
+                        <tr>
+                            <td id="func_name">{{ func.fun_name }}</td>
+                            <td>{{ func.fun_desc }}</td>
+                            <td>{{ func.state_dir }}</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+                  <div class="box-footer" align="right">
+                      <button type="button" class="btn btn-primary btn-sm" id="ecs_init">确定</button>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

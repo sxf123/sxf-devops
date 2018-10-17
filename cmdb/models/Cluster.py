@@ -13,4 +13,8 @@ class Cluster(models.Model):
         verbose_name_plural = verbose_name
         permissions = (
             ("scan_cluster","Can scan cluster info"),
+            ("resource_manage","Can manage 资源"),
+            ("project_manage","Can manage 项目"),
+            ("ldap_add","Can add LDAP用户"),
+            ("project_upgrade","Can upgrade 项目")
         )

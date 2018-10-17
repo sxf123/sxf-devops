@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^common/',include('common.urls')),
     url(r'^cmdb/',include('cmdb.urls')),
+    url(r'^project/',include('cmdb.urls_proj')),
     url(r'^accounts/login/$',views.LoginView.as_view(),name="login"),
     url(r'^dxwf/',include('dxwf.urls')),
     url(r'^api/',include('cmdbapi.urls')),
@@ -33,5 +34,6 @@ urlpatterns = [
     url(r'^import/',include('import_data.urls')),
     url(r'^jenkinsapi/',include('jenkinsapi.urls')),
     url(r'^deploy/',include('deploy.urls')),
-    url(r'^account/',include('account.urls'))
+    url(r'^account/',include('account.urls')),
+    url(r'^ldap/',include('ldapmanage.urls'))
 ]

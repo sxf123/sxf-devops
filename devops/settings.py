@@ -12,6 +12,36 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 import datetime
+import ldap
+from django_auth_ldap.config import LDAPSearch,LDAPSearchUnion,GroupOfNamesType,PosixGroupType
+import djcelery
+
+djcelery.setup_loader()
+BROKER_URL = "redis://10.252.214.43:6379/0"
+CELERY_TIMEZONE = "Asia/Shanghai"
+CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
+
+AUTHENTICATION_BACKENDS = (
+    "django_auth_ldap.backend.LDAPBackend",
+    "django.contrib.auth.backends.ModelBackend",
+)
+
+AUTH_LDAP_SERVER_URI = "ldap://ldap.zhexinit.com"
+AUTH_LDAP_BIND_DN="cn=songxiaofeng,ou=ProductRDCenter,dc=zhexinit,dc=com"
+AUTH_LDAP_BIND_PASSWORD="Xiao!@34"
+OU="DC=zhexinit,DC=com"
+AUTH_LDAP_USER_SEARCH=LDAPSearch(OU,ldap.SCOPE_SUBTREE,"(uid=%(user)s)")
+AUTH_LDAP_USER_ATTR_MAP={
+    "first_name": "displayName",
+    "last_name": "sn",
+    "email": "mail"
+}
+#
+AUTH_LDAP_GROUP_TYPE = PosixGroupType()
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch("ou=group,dc=zhexinit,dc=com",ldap.SCOPE_SUBTREE,"(objectClass=posixGroup)")
+AUTH_LDAP_REQUIRE_GROUP = "cn=cmdb,ou=group,dc=zhexinit,dc=com"
+# # AUTH_LDAP_MIRROR_GROUPS = True
+AUTH_LDAP_ALWAYS_UPDATE_USER = True
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -46,7 +76,9 @@ INSTALLED_APPS = [
     'cmdbapi',
     'config_software',
     'deploy',
-    'account'
+    'account',
+    'ldapmanage',
+    'djcelery'
 ]
 
 MIDDLEWARE = [
@@ -124,13 +156,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -183,7 +215,7 @@ LOGGING = {
     }
 }
 
-DEFAUTL_LOGGER = "default"
+DEFAUTL_LOGGER = "django_auth_ldap"
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES':(
@@ -213,11 +245,11 @@ REDIS_PORT = 6379
 
 DXWF_PKG_DIR = "/root/projdir"
 
-GET_JAVA_PROCESS_SCRIPT = "salt://scripts/get_java_process.sh"
+GET_JAVA_PROCESS_SCRIPT = "salt://scripts/get_jvm_process.sh"
 
-JENKINS_USER = "admin"
-JENKINS_TOKEN = "2b232560aaf2e7c647c8ced87e632484"
-JENKINS_URL = "http://192.168.64.128:8080"
+JENKINS_USER = "songxiaofeng"
+JENKINS_TOKEN = "5dd2e8a1150295b48d234be65a41badb"
+JENKINS_URL = "http://10.252.214.43:8080"
 
 DEPLOY_UPLOAD_PATH = os.path.join(os.path.join(BASE_DIR,"deploy"),"uploadfile")
 
@@ -225,6 +257,11 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.exmail.qq.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = "songxiaofeng@zhexinit.com"
-EMAIL_HOST_PASSWORD = "Xiao1234"
-DEFAULT_FROM_MAIL = "songxiaofeng@zhexinit.com"
+EMAIL_HOST_USER = "it@zhexinit.com"
+EMAIL_HOST_PASSWORD = "zGRZENTgjJ1v"
+DEFAULT_FROM_MAIL = "it@zhexinit.com"
+
+ZABBIX_URL = "http://121.40.237.72/zabbix"
+ZABBIX_URL_VPC = "http://121.196.197.17:880/zabbix"
+ZABBIX_USER = "songxiaofeng"
+ZABBIX_PASSWORD = "songxiaofeng123"

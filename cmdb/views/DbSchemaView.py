@@ -42,7 +42,7 @@ class DbSchemaAddView(View):
         self.context = {"dbschema_add_form":dbschema_add_form}
         return render(request,"cmdb/database/dbschema_add.html",self.context)
     @method_decorator(login_required)
-    @method_decorator(permission_required("cmdb.add_schema",raise_exception=True))
+    @method_decorator(permission_required("cmdb.add_dbschema",raise_exception=True))
     def post(self,request,*args,**kwargs):
         dbschema_add_form = DbSchemaAddForm(request.POST)
         if dbschema_add_form.is_valid():

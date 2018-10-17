@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
 from account.forms import UserAddForm,UserUpdateForm
 from account.forms import GroupSearchForm,GroupAddForm
+from django.contrib.auth.decorators import permission_required
 
 class UserListView(View):
     def __init__(self):
@@ -70,16 +71,15 @@ class UserAddView(View):
             is_superuser = user_add_form.cleaned_data.get("is_superuser")
             is_staff = user_add_form.cleaned_data.get("is_staff")
             group = user_add_form.cleaned_data.get("group")
-            print(user_add_form.cleaned_data)
             user = User(
                 username = username,
-                password = password,
                 first_name = first_name,
                 last_name = last_name,
                 email = email,
                 is_superuser = is_superuser,
                 is_staff = is_staff
             )
+            user.set_password(password)
             user.save()
             group = Group.objects.get(pk=group)
             user.groups.add(group)
@@ -109,7 +109,8 @@ class UserUpdateView(View):
             id = kwargs.get("id")
             user = User.objects.get(pk=id)
             user.username = user_update_form.cleaned_data.get("username")
-            user.set_password(user_update_form.cleaned_data.get("password"))
+            if user_update_form.cleaned_data.get("password") != "":
+                user.set_password(user_update_form.cleaned_data.get("password"))
             user.first_name = user_update_form.cleaned_data.get("first_name")
             user.last_name = user_update_form.cleaned_data.get("last_name")
             user.email = user_update_form.cleaned_data.get("email")
@@ -202,6 +203,17 @@ class GroupUpdateView(View):
         else:
             self.context = {"group_update_form":group_update_form,"errors":group_update_form.errors}
             return render(request,"account/group_update.html",self.context)
+
+class GroupDeleteView(View):
+    def __init__(self):
+        self.context = {}
+    @method_decorator(login_required)
+    @method_decorator(permission_required("auth.delete_group",raise_exception=True))
+    def get(self,request,*args,**kwargs):
+        id = kwargs.get("id")
+        group = Group.objects.get(pk=id)
+        group.delete()
+        return HttpResponsePermanentRedirect(reverse("group_list"))
 
 
 
