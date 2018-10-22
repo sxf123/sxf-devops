@@ -8,7 +8,7 @@ class ProcessSerializer(serializers.ModelSerializer):
     ecshost = serializers.CharField(source = "ecshost.minion_id",allow_blank=True)
     class Meta:
         model = Process
-        fields = ("id","process_name","process_homepath","process_id","process_port","process_log","projecmodule","ecshost")
+        fields = ("id","process_name","process_homepath","process_id","process_port","process_log","projectmodule","ecshost")
     def get_projectmodule(self,module_name):
         try:
             return ProjectModule.objects.get(module_name=module_name)

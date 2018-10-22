@@ -19,6 +19,7 @@ class LoginView(View):
         self.context = {"login_form":login_form}
         return render(request,"common/login.html",self.context)
     def post(self,request,*args,**kwargs):
+        url = request.GET.get("next")
         login_form = LoginForm(request.POST)
         if login_form.is_valid():
             username = request.POST["username"]
@@ -26,7 +27,7 @@ class LoginView(View):
             user = auth.authenticate(username=username,password=password)
             if user is not None and user.is_active:
                 auth.login(request,user)
-                return HttpResponsePermanentRedirect(reverse("index"))
+                return HttpResponsePermanentRedirect(request.GET.get("next"))
             else:
                 self.context = {"login_form":login_form,"password_is_wrong":True}
                 return render(request,"common/login.html",self.context)

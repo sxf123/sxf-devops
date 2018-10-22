@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required,permission_required
 from django.utils.decorators import method_decorator
 from cmdb.models.Process import Process
-from cmdb.forms.ProcessForm import ProcessSearchForm,ProcessAddForm
+from cmdb.forms.ProcessForm import ProcessSearchForm,ProcessAddForm,ProcessUpdateForm
 from cmdb.models.ProjectModule import ProjectModule
 from cmdb.models.EcsHost import EcsHost
 from django.core.urlresolvers import reverse
@@ -53,8 +53,8 @@ class ProcessAdd(View):
             process_id = process_add_form.cleaned_data.get("process_id")
             process_port = process_add_form.cleaned_data.get("process_port")
             process_log = process_add_form.cleaned_data.get("process_log")
-            projectmodule = ProjectModule.objects.get(module_name=process_add_form.cleaned_data.get("projectmodule"))
-            ecshost = EcsHost.objects.get(instance_id=process_add_form.cleaned_data.get("ecshost"))
+            projectmodule = ProjectModule.objects.get(pk=process_add_form.cleaned_data.get("projectmodule"))
+            ecshost = EcsHost.objects.get(pk=process_add_form.cleaned_data.get("ecshost"))
             process = Process(
                 process_name = process_name,
                 process_homepath = process_homepath,
@@ -93,8 +93,8 @@ class ProcessUpdate(View):
             process.process_id = process_update_form.cleaned_data.get("process_id")
             process.process_port = process_update_form.cleaned_data.get("process_port")
             process.process_log = process_update_form.cleaned_data.get("process_log")
-            process.projectmodule = ProjectModule.objects.get(module_name=process_update_form.cleaned_data.get("projectmodule"))
-            process.ecshost = ProjectModule.objects.get(minion_id=process_update_form.cleaned_data.get("ecshost"))
+            process.projectmodule = ProjectModule.objects.get(pk=process_update_form.cleaned_data.get("projectmodule"))
+            process.ecshost = EcsHost.objects.get(pk=process_update_form.cleaned_data.get("ecshost"))
             process.save()
             return HttpResponseRedirect(reverse("process_list"))
         else:

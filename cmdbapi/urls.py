@@ -9,7 +9,7 @@ from cmdbapi.views.DomainNameView import DomainNameList,DomainNameDetail,DomainN
 from cmdbapi.views.IpPoolView import IpPoolList,IpPoolDetail,IpPollSearch,IpPoolDelete,IpPoolUpdateWithId
 from cmdbapi.views.UserInfoView import UserInfo
 from cmdbapi.views.DbSchemaView import DbSchemaList,DbSchemaSearch,DbSchemaDetail,DbSchemaDelete,DbSchemaUpdateWithId
-from cmdbapi.views.ProcessView import ProcessList,ProcessUpdate
+from cmdbapi.views.ProcessView import ProcessList,ProcessUpdate,ProcessDetail
 
 urlpatterns = [
     url(r'^cluster/list/$',ClusterList.as_view(),name="cluster_list_api"),
@@ -60,5 +60,6 @@ urlpatterns = [
     url(r"^ippool/update/$",IpPoolUpdateWithId.as_view(),name="ippool_update_api"),
     url(r"^user/info/$",UserInfo.as_view(),name="user_info_api"),
     url(r"^process/list/$",ProcessList.as_view(),name="process_list_api"),
-    url(r"^process/update/$",ProcessUpdate.as_view(),name="process_update_api")
+    url(r"^process/update/$",ProcessUpdate.as_view(),name="process_update_api"),
+    url(r"^process/search/$",ProcessDetail.as_view(),name="process_detail")
 ]

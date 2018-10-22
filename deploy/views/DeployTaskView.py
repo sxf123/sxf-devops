@@ -163,7 +163,17 @@ class DeployTaskView(View):
                     zip_dir(dirname,os.path.join(os.path.join(os.path.join(DEPLOY_UPLOAD_PATH, module_name), tag_version),zipfilename))
                     if deploy_task.need_test == "yes":
                         subject = "需要测试验证"
-                        message = "{}-{}需要升级\nhttp://ops.zhexinit.com:81/deploy/task/examine/{}/".format(module_name,tag_version,deploy_task.id)
+                        message = """
+                    <html>
+                        <head></head>
+                        <body>
+                            <p>{0}-{1}需要升级</p>
+                            <a href="http://ops.zhexinit.com:81/deploy/task/examine/{2}/">
+                                http://ops.zhexinit.com:81/deploy/task/examine/{3}/
+                            </a>
+                        </body>
+                    </html>
+                    """.format(module_name,tag_version,deploy_task.id,deploy_task.id)
                         addr = ["{}@zhexinit.com".format(v) for v in deploy_task.verify_person.split()]
                         for e in email_person:
                             addr.append("{}@zhexinit.com".format(e))
@@ -171,7 +181,17 @@ class DeployTaskView(View):
                         emailthread.start()
                     else:
                         subject = "直接升级"
-                        message = "{}-{}需要升级\nhttp://ops.zhexinit.com:81/deploy/task/examine/{}/".format(module_name,tag_version,deploy_task.id)
+                        message = """
+                    <html>
+                        <head></head>
+                        <body>
+                            <p>{0}-{1}需要升级</p>
+                            <a url="http://ops.zhexinit.com:81/deploy/task/examine/{2}/">
+                                http://ops.zhexinit.com:81/deploy/task/examine/{3}/
+                            </a>
+                        </body>
+                    </html>
+                    """.format(module_name,tag_version,deploy_task.id,deploy_task.id)
                         addr = ["{}@zhexinit.com".format(deploy_task.handle_person)]
                         for e in email_person:
                             addr.append("{}@zhexinit.com".format(e))
@@ -182,7 +202,17 @@ class DeployTaskView(View):
                 else:
                     if deploy_task.need_test == "yes":
                         subject = "需要测试验证"
-                        message = "{}-{}需要升级\nhttp://ops.zhexinit.com:81/deploy/task/examine/{}/".format(module_name,tag_version,deploy_task.id)
+                        message = """
+                    <html>
+                        <head></head>
+                        <body>
+                            <p>{0}-{1}需要升级</p>
+                            <a href="http://ops.zhexinit.com:81/deploy/task/examine/{2}/">
+                                http://ops.zhexinit.com:81/deploy/task/examine/{3}/
+                            </a>
+                        </body>
+                    </html>
+                    """.format(module_name,tag_version,deploy_task.id,deploy_task.id)
                         addr = ["{}@zhexinit.com".format(v) for v in deploy_task.verify_person.split()]
                         for e in deploy_task.email_person.split():
                             addr.append("{}@zhexinit.com".format(e))
@@ -190,7 +220,17 @@ class DeployTaskView(View):
                         emailthread.start()
                     else:
                         subject = "直接升级"
-                        message = "{}-{}需要升级\nhttp://ops.zhexinit.com:81/deploy/task/examine/{}/".format(module_name,tag_version,deploy_task.id)
+                        message = """
+                    <html>
+                        <head></head>
+                        <body>
+                            <p>{0}-{1}需要升级</p>
+                            <a href="http://ops.zhexinit.com:81/deploy/task/examine/{2}/">
+                                http://ops.zhexinit.com:81/deploy/task/examine/{3}/
+                            </a>
+                        </body>
+                    </html>
+                    """.format(module_name,tag_version,deploy_task.id,deploy_task.id)
                         addr = ["{}@zhexinit.com".format(deploy_task.handle_person)]
                         for e in email_person:
                             addr.append("{}@zhexinit.com".format(e))

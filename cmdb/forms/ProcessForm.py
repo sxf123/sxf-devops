@@ -40,9 +40,19 @@ class ProcessAddForm(forms.Form):
     )
     def __init__(self,*args,**kwargs):
         super(ProcessAddForm,self).__init__(*args,**kwargs)
-        projectmodule_choices = list(ProjectModule.objects.all().values_list("module_name","module_name"))
+        projectmodule_choices = list(ProjectModule.objects.all().values_list("id","module_name"))
         projectmodule_choices.insert(0,("","模块"))
-        ecshost_choices = list(EcsHost.objects.all().values_list("instance_id","minion_id"))
+        ecshost_choices = list(EcsHost.objects.all().values_list("id","minion_id"))
         ecshost_choices.insert(0,("","ECS主机"))
         self.fields["projectmodule"].widget.choices = projectmodule_choices
         self.fields["ecshost"].widget.choices = ecshost_choices
+
+class ProcessUpdateForm(ProcessAddForm):
+    projectmodule = forms.CharField(
+        widget = Select(attrs = {"id":"projectmodule","class":"form-control"})
+    )
+    ecshost = forms.CharField(
+        widget = Select(attrs = {"id":"ecshost","class":"form-control"})
+    )
+    def __init__(self,*args,**kwargs):
+        super(ProcessUpdateForm,self).__init__(*args,**kwargs)

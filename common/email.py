@@ -5,7 +5,7 @@ import threading
 def sendmail(subject,content,to_addr):
     from_email = DEFAULT_FROM_MAIL
     msg = EmailMultiAlternatives(subject,content,from_email,to_addr)
-    msg.content_subtype = "html"
+    msg.attach_alternative(content,"text/html")
     msg.send()
 
 class EmailThread(threading.Thread):

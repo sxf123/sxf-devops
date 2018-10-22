@@ -25,7 +25,7 @@ class SqlFile(View):
     def get(self,request,*args,**kwargs):
         sqlexecute_search_form = SqlExecuteSearchForm()
         user = User.objects.get(username=request.user)
-        if request.user.is_superuser:
+        if request.user.is_superuser or user.groups.all()[0].name == "ops":
             sqlexecute = SqlExecute.objects.all().order_by("-id")
         else:
             sqlexecute = SqlExecute.objects.filter(upload_person__username=request.user).order_by("-id")
