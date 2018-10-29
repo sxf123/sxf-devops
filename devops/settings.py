@@ -17,7 +17,7 @@ from django_auth_ldap.config import LDAPSearch,LDAPSearchUnion,GroupOfNamesType,
 import djcelery
 
 djcelery.setup_loader()
-BROKER_URL = "redis://10.252.214.43:6379/0"
+BROKER_URL = "redis://192.168.64.128:6379/0"
 CELERY_TIMEZONE = "Asia/Shanghai"
 CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 
@@ -258,10 +258,10 @@ EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.exmail.qq.com'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = "it@zhexinit.com"
-EMAIL_HOST_PASSWORD = "zGRZENTgjJ1v"
+EMAIL_HOST_PASSWORD = "123456"
 DEFAULT_FROM_MAIL = "it@zhexinit.com"
 
 ZABBIX_URL = "http://121.40.237.72/zabbix"
 ZABBIX_URL_VPC = "http://121.196.197.17:880/zabbix"
 ZABBIX_USER = "songxiaofeng"
-ZABBIX_PASSWORD = "songxiaofeng123"
+ZABBIX_PASSWORD = "songxiaofeng"
